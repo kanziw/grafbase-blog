@@ -1,4 +1,11 @@
 {
   "name": "grafbase-blog",
-  "packageManager": "yarn@3.2.1"
+  "packageManager": "yarn@3.2.1",
+  "scripts": {
+    "dev": "concurrently --kill-others \"yarn:dev:*\"",
+    "dev:grafbase": "npx grafbase dev"
+  },
+  "devDependencies": {
+    "concurrently": "^7.3.0"
+  }
 }
