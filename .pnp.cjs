@@ -39,6 +39,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@graphql-codegen/typescript-operations", "virtual:a43dc21ffa9be1575175f0b161edef0dd0738ba8d1c67f0dd28ad0fd5f9c8ec06b86ee7dcc9f58847c4536b803db268701942009eb06bee9d5697f6c53ef636a#npm:2.5.3"],\
             ["@graphql-typed-document-node/core", "virtual:a43dc21ffa9be1575175f0b161edef0dd0738ba8d1c67f0dd28ad0fd5f9c8ec06b86ee7dcc9f58847c4536b803db268701942009eb06bee9d5697f6c53ef636a#npm:3.1.1"],\
             ["@types/lodash", "npm:4.14.184"],\
+            ["@types/node", "npm:18.7.8"],\
             ["@types/react", "npm:18.0.17"],\
             ["@types/react-dom", "npm:18.0.6"],\
             ["@typescript-eslint/eslint-plugin", "virtual:a43dc21ffa9be1575175f0b161edef0dd0738ba8d1c67f0dd28ad0fd5f9c8ec06b86ee7dcc9f58847c4536b803db268701942009eb06bee9d5697f6c53ef636a#npm:5.33.1"],\
@@ -8400,6 +8401,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@graphql-codegen/typescript-operations", "virtual:a43dc21ffa9be1575175f0b161edef0dd0738ba8d1c67f0dd28ad0fd5f9c8ec06b86ee7dcc9f58847c4536b803db268701942009eb06bee9d5697f6c53ef636a#npm:2.5.3"],\
             ["@graphql-typed-document-node/core", "virtual:a43dc21ffa9be1575175f0b161edef0dd0738ba8d1c67f0dd28ad0fd5f9c8ec06b86ee7dcc9f58847c4536b803db268701942009eb06bee9d5697f6c53ef636a#npm:3.1.1"],\
             ["@types/lodash", "npm:4.14.184"],\
+            ["@types/node", "npm:18.7.8"],\
             ["@types/react", "npm:18.0.17"],\
             ["@types/react-dom", "npm:18.0.6"],\
             ["@typescript-eslint/eslint-plugin", "virtual:a43dc21ffa9be1575175f0b161edef0dd0738ba8d1c67f0dd28ad0fd5f9c8ec06b86ee7dcc9f58847c4536b803db268701942009eb06bee9d5697f6c53ef636a#npm:5.33.1"],\
