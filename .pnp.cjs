@@ -38,6 +38,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@graphql-codegen/typescript", "virtual:929df7768b2d9017a2b874ea135b14445d3d6d9f13a0affb3b840b8ac42cd912bb038ea639d5f7f18d8462098b90c1f580e2503fb6990fb90c0490e1e7e5913a#npm:2.7.3"],\
             ["@graphql-codegen/typescript-operations", "virtual:929df7768b2d9017a2b874ea135b14445d3d6d9f13a0affb3b840b8ac42cd912bb038ea639d5f7f18d8462098b90c1f580e2503fb6990fb90c0490e1e7e5913a#npm:2.5.3"],\
             ["@graphql-typed-document-node/core", "virtual:929df7768b2d9017a2b874ea135b14445d3d6d9f13a0affb3b840b8ac42cd912bb038ea639d5f7f18d8462098b90c1f580e2503fb6990fb90c0490e1e7e5913a#npm:3.1.1"],\
+            ["@types/lodash", "npm:4.14.184"],\
             ["@types/react", "npm:18.0.17"],\
             ["@types/react-dom", "npm:18.0.6"],\
             ["@typescript-eslint/eslint-plugin", "virtual:929df7768b2d9017a2b874ea135b14445d3d6d9f13a0affb3b840b8ac42cd912bb038ea639d5f7f18d8462098b90c1f580e2503fb6990fb90c0490e1e7e5913a#npm:5.33.1"],\
@@ -46,8 +47,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@urql/exchange-graphcache", "virtual:929df7768b2d9017a2b874ea135b14445d3d6d9f13a0affb3b840b8ac42cd912bb038ea639d5f7f18d8462098b90c1f580e2503fb6990fb90c0490e1e7e5913a#npm:5.0.0"],\
             ["@vitejs/plugin-react", "virtual:929df7768b2d9017a2b874ea135b14445d3d6d9f13a0affb3b840b8ac42cd912bb038ea639d5f7f18d8462098b90c1f580e2503fb6990fb90c0490e1e7e5913a#npm:2.0.1"],\
             ["concurrently", "npm:7.3.0"],\
-            ["dotenv", "npm:16.0.1"],\
-            ["dotenv-safe", "npm:8.2.0"],\
             ["eslint", "npm:8.22.0"],\
             ["eslint-config-kanziw", "virtual:929df7768b2d9017a2b874ea135b14445d3d6d9f13a0affb3b840b8ac42cd912bb038ea639d5f7f18d8462098b90c1f580e2503fb6990fb90c0490e1e7e5913a#npm:0.1.1"],\
             ["eslint-config-react-app", "virtual:929df7768b2d9017a2b874ea135b14445d3d6d9f13a0affb3b840b8ac42cd912bb038ea639d5f7f18d8462098b90c1f580e2503fb6990fb90c0490e1e7e5913a#npm:7.0.1"],\
@@ -58,6 +57,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-react", "virtual:929df7768b2d9017a2b874ea135b14445d3d6d9f13a0affb3b840b8ac42cd912bb038ea639d5f7f18d8462098b90c1f580e2503fb6990fb90c0490e1e7e5913a#npm:7.30.1"],\
             ["eslint-plugin-simple-import-sort", "virtual:929df7768b2d9017a2b874ea135b14445d3d6d9f13a0affb3b840b8ac42cd912bb038ea639d5f7f18d8462098b90c1f580e2503fb6990fb90c0490e1e7e5913a#npm:7.0.0"],\
             ["graphql", "npm:16.6.0"],\
+            ["lodash", "npm:4.17.21"],\
             ["react", "npm:18.2.0"],\
             ["react-dom", "virtual:929df7768b2d9017a2b874ea135b14445d3d6d9f13a0affb3b840b8ac42cd912bb038ea639d5f7f18d8462098b90c1f580e2503fb6990fb90c0490e1e7e5913a#npm:18.2.0"],\
             ["react-router-dom", "virtual:929df7768b2d9017a2b874ea135b14445d3d6d9f13a0affb3b840b8ac42cd912bb038ea639d5f7f18d8462098b90c1f580e2503fb6990fb90c0490e1e7e5913a#npm:6.3.0"],\
@@ -3837,6 +3837,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@types/lodash", [\
+        ["npm:4.14.184", {\
+          "packageLocation": "./.yarn/cache/@types-lodash-npm-4.14.184-aec91d64ae-6d9a4d67f7.zip/node_modules/@types/lodash/",\
+          "packageDependencies": [\
+            ["@types/lodash", "npm:4.14.184"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@types/node", [\
         ["npm:18.7.8", {\
           "packageLocation": "./.yarn/cache/@types-node-npm-18.7.8-f0ed4b241a-e0125efefa.zip/node_modules/@types/node/",\
@@ -5630,23 +5639,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["dotenv", "npm:16.0.1"]\
           ],\
           "linkType": "HARD"\
-        }],\
-        ["npm:8.6.0", {\
-          "packageLocation": "./.yarn/cache/dotenv-npm-8.6.0-2ce3e9f7bb-38e902c80b.zip/node_modules/dotenv/",\
-          "packageDependencies": [\
-            ["dotenv", "npm:8.6.0"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["dotenv-safe", [\
-        ["npm:8.2.0", {\
-          "packageLocation": "./.yarn/cache/dotenv-safe-npm-8.2.0-f1bcdebce9-8b73770330.zip/node_modules/dotenv-safe/",\
-          "packageDependencies": [\
-            ["dotenv-safe", "npm:8.2.0"],\
-            ["dotenv", "npm:8.6.0"]\
-          ],\
-          "linkType": "HARD"\
         }]\
       ]],\
       ["dset", [\
@@ -7146,6 +7138,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@graphql-codegen/typescript", "virtual:929df7768b2d9017a2b874ea135b14445d3d6d9f13a0affb3b840b8ac42cd912bb038ea639d5f7f18d8462098b90c1f580e2503fb6990fb90c0490e1e7e5913a#npm:2.7.3"],\
             ["@graphql-codegen/typescript-operations", "virtual:929df7768b2d9017a2b874ea135b14445d3d6d9f13a0affb3b840b8ac42cd912bb038ea639d5f7f18d8462098b90c1f580e2503fb6990fb90c0490e1e7e5913a#npm:2.5.3"],\
             ["@graphql-typed-document-node/core", "virtual:929df7768b2d9017a2b874ea135b14445d3d6d9f13a0affb3b840b8ac42cd912bb038ea639d5f7f18d8462098b90c1f580e2503fb6990fb90c0490e1e7e5913a#npm:3.1.1"],\
+            ["@types/lodash", "npm:4.14.184"],\
             ["@types/react", "npm:18.0.17"],\
             ["@types/react-dom", "npm:18.0.6"],\
             ["@typescript-eslint/eslint-plugin", "virtual:929df7768b2d9017a2b874ea135b14445d3d6d9f13a0affb3b840b8ac42cd912bb038ea639d5f7f18d8462098b90c1f580e2503fb6990fb90c0490e1e7e5913a#npm:5.33.1"],\
@@ -7154,8 +7147,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@urql/exchange-graphcache", "virtual:929df7768b2d9017a2b874ea135b14445d3d6d9f13a0affb3b840b8ac42cd912bb038ea639d5f7f18d8462098b90c1f580e2503fb6990fb90c0490e1e7e5913a#npm:5.0.0"],\
             ["@vitejs/plugin-react", "virtual:929df7768b2d9017a2b874ea135b14445d3d6d9f13a0affb3b840b8ac42cd912bb038ea639d5f7f18d8462098b90c1f580e2503fb6990fb90c0490e1e7e5913a#npm:2.0.1"],\
             ["concurrently", "npm:7.3.0"],\
-            ["dotenv", "npm:16.0.1"],\
-            ["dotenv-safe", "npm:8.2.0"],\
             ["eslint", "npm:8.22.0"],\
             ["eslint-config-kanziw", "virtual:929df7768b2d9017a2b874ea135b14445d3d6d9f13a0affb3b840b8ac42cd912bb038ea639d5f7f18d8462098b90c1f580e2503fb6990fb90c0490e1e7e5913a#npm:0.1.1"],\
             ["eslint-config-react-app", "virtual:929df7768b2d9017a2b874ea135b14445d3d6d9f13a0affb3b840b8ac42cd912bb038ea639d5f7f18d8462098b90c1f580e2503fb6990fb90c0490e1e7e5913a#npm:7.0.1"],\
@@ -7166,6 +7157,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-react", "virtual:929df7768b2d9017a2b874ea135b14445d3d6d9f13a0affb3b840b8ac42cd912bb038ea639d5f7f18d8462098b90c1f580e2503fb6990fb90c0490e1e7e5913a#npm:7.30.1"],\
             ["eslint-plugin-simple-import-sort", "virtual:929df7768b2d9017a2b874ea135b14445d3d6d9f13a0affb3b840b8ac42cd912bb038ea639d5f7f18d8462098b90c1f580e2503fb6990fb90c0490e1e7e5913a#npm:7.0.0"],\
             ["graphql", "npm:16.6.0"],\
+            ["lodash", "npm:4.17.21"],\
             ["react", "npm:18.2.0"],\
             ["react-dom", "virtual:929df7768b2d9017a2b874ea135b14445d3d6d9f13a0affb3b840b8ac42cd912bb038ea639d5f7f18d8462098b90c1f580e2503fb6990fb90c0490e1e7e5913a#npm:18.2.0"],\
             ["react-router-dom", "virtual:929df7768b2d9017a2b874ea135b14445d3d6d9f13a0affb3b840b8ac42cd912bb038ea639d5f7f18d8462098b90c1f580e2503fb6990fb90c0490e1e7e5913a#npm:6.3.0"],\

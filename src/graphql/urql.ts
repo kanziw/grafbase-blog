@@ -5,7 +5,7 @@ import { errorExchange } from './urql.error'
 import { cacheExchange } from './urql.exchange'
 
 const urqlClientBaseConfig: ClientOptions = {
-  url: '/api/graphql',
+  url: import.meta.env.GRAFBASE_API_URL ?? 'http://127.0.0.1:4000/graphql',
   requestPolicy: 'cache-and-network',
 }
 
