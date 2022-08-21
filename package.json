@@ -1,5 +1,5 @@
 {
-  "name": "grafbase-blog",
+  "name": "miniapp-game-heaven",
   "packageManager": "yarn@3.2.1",
   "scripts": {
     "dev": "concurrently --kill-others \"yarn:dev:*\"",
