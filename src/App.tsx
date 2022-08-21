@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 import { Helmet } from './components'
 
-const games: Game[] = [
+const games = [
   {
     slug: 'space-worm',
     name: 'SpaceWorm',
