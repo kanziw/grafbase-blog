@@ -4848,10 +4848,12 @@ __metadata:
     "@graphql-codegen/typed-document-node": ^2.3.3
     "@graphql-codegen/typescript": ^2.7.3
     "@graphql-codegen/typescript-operations": ^2.5.3
+    "@graphql-typed-document-node/core": ^3.1.1
     "@types/react": ^18.0.17
     "@types/react-dom": ^18.0.6
     "@typescript-eslint/eslint-plugin": ^5.33.1
     "@typescript-eslint/parser": ^5.33.1
+    "@urql/core": ^3.0.0
     "@urql/exchange-graphcache": ^5.0.0
     "@vitejs/plugin-react": ^2.0.1
     concurrently: ^7.3.0

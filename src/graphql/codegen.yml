@@ -1,7 +1,5 @@
 schema:
-  - ${GRAFBASE_API_URL}:
-      headers:
-        x-api-key: ${GRAFBASE_API_KEY}
+  - http://127.0.0.1:4000/graphql
 documents: ./src/graphql/document.graphql
 generates:
   ./src/graphql/schema/index.ts:
