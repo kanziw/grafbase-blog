@@ -1,0 +1,20 @@
+.canvasWrap {
+  background: black;
+
+  position: fixed;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none !important;
+  margin: 0;
+  overflow: hidden;
+}
+
+.myCanvas {
+  background: linear-gradient(45deg, #1D2951 0% 20%, #003B59);
+  margin: 0;
+  padding: 0;
+  border: none;
+}
