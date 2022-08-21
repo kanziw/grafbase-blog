@@ -1,10 +1,8 @@
 {
-  "name": "grafbase-blog",
+  "name": "miniapp-game-heaven",
   "packageManager": "yarn@3.2.1",
   "scripts": {
-    "dev": "concurrently --kill-others \"yarn:dev:*\"",
-    "dev:vite": "vite --host",
-    "dev:grafbase": "npx grafbase dev",
+    "dev": "vite --host",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint ."
