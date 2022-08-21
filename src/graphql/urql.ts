@@ -6,6 +6,11 @@ import { cacheExchange } from './urql.exchange'
 
 const urqlClientBaseConfig: ClientOptions = {
   url: import.meta.env.VITE_GRAFBASE_API_URL,
+  fetchOptions: {
+    headers: {
+      'x-api-key': import.meta.env.VITE_GRAFBASE_PUBLIC_API_KEY,
+    },
+  },
   requestPolicy: 'cache-and-network',
 }
 
