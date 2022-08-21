@@ -1,13 +1,8 @@
-html {
-    background: black;
-}
+.canvasWrap {
+  background: black;
 
-body,
-html {
   position: fixed;
-}
 
-body {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -17,7 +12,7 @@ body {
   overflow: hidden;
 }
 
-canvas {
+.myCanvas {
   background: linear-gradient(45deg, #1D2951 0% 20%, #003B59);
   margin: 0;
   padding: 0;

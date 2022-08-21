@@ -1,3 +1,5 @@
+/* eslint-disable */
+// @ts-nocheck
 // https://github.com/dancramp/js13k-2021
 
 export const gameOnCanvas = (spaceWorm_canvas) => {

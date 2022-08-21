@@ -11,8 +11,10 @@ export const SpaceWorm = () => {
     gameOnCanvas(canvasRef.current)
   }, [])
   return (
-    <canvas ref={canvasRef} className="myCanvas">
-      <p>Canvas support required.</p>
-    </canvas>
+    <div className="canvasWrap">
+      <canvas ref={canvasRef} className="myCanvas">
+        <p>Canvas support required.</p>
+      </canvas>
+    </div>
   )
 }
