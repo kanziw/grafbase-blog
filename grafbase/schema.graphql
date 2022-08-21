@@ -2,21 +2,19 @@ type User @model {
   id: ID!
   email: String! @unique
   name: String!
-  posts: [Post]
 }
 
-type Post @model {
+type Game @model {
   id: ID!
   slug: String! @unique
-  title: String!
-  content: String!
-  user: User!
-  comments: [Comment]
+  name: String! @unique
+  linkUrl: String!
+  logoImageUrl: String!
 }
 
-type Comment @model {
+type GameScore @model {
   id: ID!
-  content: String!
+  game: Game!
   user: User!
-  post: Post!
+  score: Int!
 }
