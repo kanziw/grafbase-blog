@@ -9,7 +9,7 @@ export default defineConfig(({ mode }) => {
       break
     }
     case 'preview': {
-      process.env.VITE_GRAFBASE_API_URL = `https://miniapp-game-heaven-${process.env.VERCEL_GIT_COMMIT_REF}-kanziw.grafbase.app/`
+      process.env.VITE_GRAFBASE_API_URL = `https://miniapp-game-heaven-${process.env.VERCEL_GIT_COMMIT_REF}-kanziw.grafbase.app/graphql`
       break
     }
   }
