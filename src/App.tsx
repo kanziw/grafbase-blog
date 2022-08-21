@@ -2,7 +2,9 @@ import './App.css'
 
 import { Link } from 'react-router-dom'
 
-const games = [
+import { Helmet } from './components'
+
+const games: Game[] = [
   {
     slug: 'space-worm',
     name: 'SpaceWorm',
@@ -13,6 +15,7 @@ const games = [
 
 const App = () => (
   <>
+    <Helmet isRoot={true} />
     <h1 className="title">미니앱게임천국👼</h1>
     <section className="games">
       <ul>
