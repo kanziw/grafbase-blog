@@ -1,0 +1,25 @@
+html {
+    background: black;
+}
+
+body,
+html {
+  position: fixed;
+}
+
+body {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none !important;
+  margin: 0;
+  overflow: hidden;
+}
+
+canvas {
+  background: linear-gradient(45deg, #1D2951 0% 20%, #003B59);
+  margin: 0;
+  padding: 0;
+  border: none;
+}
