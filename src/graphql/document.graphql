@@ -1,0 +1,17 @@
+fragment Game on Game {
+  id
+  slug
+  name
+  linkUrl
+  logoImageUrl
+}
+
+query Games {
+  gameCollection(first: 100) {
+    edges {
+      node {
+        ...Game
+      }
+    }
+  }
+}

@@ -1,15 +1,15 @@
-type User @model {
-  id: ID!
-  email: String! @unique
-  name: String!
-}
-
 type Game @model {
   id: ID!
   slug: String! @unique
   name: String! @unique
   linkUrl: String!
   logoImageUrl: String!
+}
+
+type User @model {
+  id: ID!
+  email: String! @unique
+  name: String!
 }
 
 type GameScore @model {

@@ -5,16 +5,27 @@
     "dev": "concurrently --kill-others \"yarn:dev:*\"",
     "dev:vite": "vite --host",
     "dev:grafbase": "npx grafbase dev",
+    "codegen": "concurrently --kill-others \"yarn:codegen:*\"",
+    "codegen:graphql": "graphql-codegen --config ./src/graphql/codegen.yml -r dotenv/config",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint ."
   },
   "dependencies": {
+    "@urql/exchange-graphcache": "^5.0.0",
+    "dotenv": "^16.0.1",
+    "dotenv-safe": "^8.2.0",
+    "graphql": "^16.6.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.3.0"
+    "react-router-dom": "^6.3.0",
+    "urql": "^3.0.1"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^2.11.6",
+    "@graphql-codegen/typed-document-node": "^2.3.3",
+    "@graphql-codegen/typescript": "^2.7.3",
+    "@graphql-codegen/typescript-operations": "^2.5.3",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "@typescript-eslint/eslint-plugin": "^5.33.1",
@@ -30,6 +41,7 @@
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "^7.30.1",
     "eslint-plugin-simple-import-sort": "^7.0.0",
+    "tslib": "^2.4.0",
     "typescript": "^4.7.4",
     "vite": "^3.0.9"
   }
