@@ -8,7 +8,7 @@ interface GameDb {
   findOne(slug: string): Game,
 
   upsertScoreIfHigher(game: Game, user: User, score: number): Promise<void>,
-  listTop10Ranks(game: Game): Promise<GameScore[]>,
+  listTop10Scores(game: Game): Promise<GameScore[]>,
 }
 
 export type Game = {
@@ -23,7 +23,9 @@ type GameScoreWithoutId = {
   userId: string,
   scoredAt: Date,
 }
-export type GameScore = WithId<GameScoreWithoutId>
+export type GameScore = WithId<GameScoreWithoutId> & {
+  rank: number,
+}
 
 const games: Game[] = [
   {
@@ -68,7 +70,7 @@ export const gameDb = (): GameDb => ({
     }, { merge: true })
   },
 
-  async listTop10Ranks(game) {
+  async listTop10Scores(game) {
     const snapshots = await getDocs(query(
       gameScoresCol,
       where('gameSlug', '==', game.slug),
@@ -84,9 +86,13 @@ function gameScoreId(gameSlug: string, userId: string) {
   return `${gameSlug}:${userId}`
 }
 
-function toGameScore(doc: GameScore): GameScore {
+function toGameScore(
+  gameScore: Omit<GameScore, 'rank'>,
+  idx: number,
+): GameScore {
   return {
-    ...doc,
-    scoredAt: (doc.scoredAt as unknown as Timestamp).toDate(),
+    ...gameScore,
+    scoredAt: (gameScore.scoredAt as unknown as Timestamp).toDate(),
+    rank: idx + 1,
   }
 }

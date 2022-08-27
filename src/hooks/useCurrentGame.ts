@@ -1,11 +1,21 @@
+import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 
-import { Game, gameDb, User } from '../db'
+import { Game, gameDb, GameScore, User } from '../db'
 import { useMe } from './useMe'
 
-export const useCurrentGame = (): { game: Game, me: User } => {
+type CurrentGame = {
+  game: Game,
+  me: User,
+  top10Scores: GameScore[] | null,
+  isLoading: boolean,
+}
+
+export const useCurrentGame = (): CurrentGame => {
   const { pathname, state } = useLocation()
   const { me } = useMe()
+  const [isLoading, setIsLoading] = useState(false)
+  const [top10Scores, setTop10Scores] = useState<GameScore[] | null>(null)
 
   let { game } = (state ?? {}) as { game: Game }
   if (!game) {
@@ -17,5 +27,12 @@ export const useCurrentGame = (): { game: Game, me: User } => {
     }
   }
 
-  return { game, me }
+  useEffect(() => {
+    setIsLoading(true)
+    gameDb().listTop10Scores(game)
+      .then(setTop10Scores)
+      .finally(() => setIsLoading(false))
+  }, [game])
+
+  return { game, me, top10Scores, isLoading }
 }

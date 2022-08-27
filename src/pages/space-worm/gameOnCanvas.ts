@@ -2,9 +2,14 @@
 // @ts-nocheck
 // https://github.com/dancramp/js13k-2021
 
-import gameEvents, { Callbacks, onState, State, getTotalScore } from './events'
+import type { GameScore } from '../../db'
+import gameEvents, { Callbacks, onState, State } from './events'
 
-export const gameOnCanvas = (spaceWorm_canvas, callbacks: Callbacks) => {
+type Props = Callbacks & {
+  top10Scores: GameScore[],
+}
+
+export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Props) => {
   const spaceWorm_ctx = spaceWorm_canvas.getContext('2d')
 
   // get the device DPI - to use in the window resize function
@@ -1018,8 +1023,14 @@ export const gameOnCanvas = (spaceWorm_canvas, callbacks: Callbacks) => {
       spaceWorm_ctx.fillStyle = 'white'
       spaceWorm_ctx.textAlign = 'center'
       spaceWorm_ctx.fillText('SPACE WORM!', 0, 0)
+      spaceWorm_ctx.font = '1px Arial'
+      spaceWorm_ctx.fillText('------------------------------------------------------------', 0, 2)
+      top10Scores.forEach((score, idx) => {
+        spaceWorm_ctx.fillText(` [${score.rank}] ${score.userId}`, 0, 2 + idx + 1)
+      })
+      spaceWorm_ctx.fillText('------------------------------------------------------------', 0, 2 + top10Scores.length + 1)
       spaceWorm_ctx.font = '2px Arial'
-      spaceWorm_ctx.fillText('Click/tap to continue.', 0, 4)
+      spaceWorm_ctx.fillText('Click/tap to continue.', 0, 2 + top10Scores.length + 3)
     } else if (spaceWorm_state === 'levelstart') {
       spaceWorm_ctx.font = '4px Arial'
       spaceWorm_ctx.fillStyle = 'white'
