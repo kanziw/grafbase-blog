@@ -1,25 +1,25 @@
 import './App.css'
 
-import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import { Helmet } from './components'
-import { gameDb, Me, userDb } from './db'
+import { gameDb } from './db'
+import { useMe } from './hooks'
 
 const App = () => {
   const games = gameDb().list()
-  const [me, setMe] = useState<Me | null>(null)
+  const { me, isLoading } = useMe()
 
-  useEffect(() => {
-    userDb().getMe().then(me => setMe(me))
-  }, [])
+  if (isLoading || !me) {
+    return <div>Loading...</div>
+  }
 
   return (
     <>
       <Helmet isRoot={true} />
       <h1 className="title">미니앱게임천국👼</h1>
       <section className="users">
-        {me && <div>Hello, {me.displayName ?? 'Anonymous'}?</div>}
+        {me && <div>👋 Hello, {me.displayName}</div>}
       </section>
       <section className="games">
         <ul>

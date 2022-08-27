@@ -1,6 +1,20 @@
-import { userDb } from '../db'
+import { useEffect, useState } from 'react'
 
-// LoginFirst component를 이용하여 이미 로그인 여부가 Guard 되어있는 상태에서만 사용하는 것을 추천
+import { Me, userDb } from '../db'
+
 export const useMe = () => {
-  return { me: userDb().mustGetMe() }
+  const [isLoading, setIsLoading] = useState(false)
+  const [me, setMe] = useState<Me | null>(null)
+
+  useEffect(() => {
+    setIsLoading(true)
+    userDb().getMe()
+      .then(setMe)
+      .finally(() => setIsLoading(false))
+  }, [])
+
+  return {
+    me,
+    isLoading,
+  }
 }

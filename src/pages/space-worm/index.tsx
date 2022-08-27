@@ -14,7 +14,7 @@ export const SpaceWorm = () => {
   const { game, me, top10Scores, isLoading } = useCurrentGame()
 
   useEffect(() => {
-    if (top10Scores && canvasRef.current) {
+    if (me && top10Scores && canvasRef.current) {
       gameOnCanvas(canvasRef.current, {
         top10Scores,
         saveScore: (score: number) => {
@@ -27,7 +27,7 @@ export const SpaceWorm = () => {
         },
       })
     }
-  }, [top10Scores, canvasRef.current])
+  }, [me, top10Scores, canvasRef.current])
 
   if (isLoading) {
     return <div>Loading..</div>

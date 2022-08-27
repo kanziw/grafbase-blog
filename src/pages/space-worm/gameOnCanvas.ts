@@ -2,11 +2,11 @@
 // @ts-nocheck
 // https://github.com/dancramp/js13k-2021
 
-import type { GameScore } from '../../db'
+import type { GameScoreWithUser } from '../../hooks'
 import gameEvents, { Callbacks, onState, State } from './events'
 
 type Props = Callbacks & {
-  top10Scores: GameScore[],
+  top10Scores: GameScoreWithUser[],
 }
 
 export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Props) => {
@@ -1023,14 +1023,17 @@ export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Pr
       spaceWorm_ctx.fillStyle = 'white'
       spaceWorm_ctx.textAlign = 'center'
       spaceWorm_ctx.fillText('SPACE WORM!', 0, 0)
-      spaceWorm_ctx.font = '1px Arial'
-      spaceWorm_ctx.fillText('------------------------------------------------------------', 0, 2)
+
+      const rankFontSize = 1.5
+      spaceWorm_ctx.font = `${rankFontSize}px Arial`
+      spaceWorm_ctx.fillText('---------------------- TOP 10 ----------------------', 0, 3)
+      const rankHeight = 3 + rankFontSize 
       top10Scores.forEach((score, idx) => {
-        spaceWorm_ctx.fillText(` [${score.rank}] ${score.userId}`, 0, 2 + idx + 1)
+        spaceWorm_ctx.fillText(`[${score.rank}]\tscore: ${score.score},\tname: ${score.user.displayName}`, 0, rankHeight + (idx * rankFontSize))
       })
-      spaceWorm_ctx.fillText('------------------------------------------------------------', 0, 2 + top10Scores.length + 1)
+      spaceWorm_ctx.fillText('--------------------------------------------------------', 0, rankHeight + (top10Scores.length * rankFontSize))
       spaceWorm_ctx.font = '2px Arial'
-      spaceWorm_ctx.fillText('Click/tap to continue.', 0, 2 + top10Scores.length + 3)
+      spaceWorm_ctx.fillText('Click/tap to continue.', 0, rankHeight + (top10Scores.length * rankFontSize) + 2)
     } else if (spaceWorm_state === 'levelstart') {
       spaceWorm_ctx.font = '4px Arial'
       spaceWorm_ctx.fillStyle = 'white'

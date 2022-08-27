@@ -1,21 +1,24 @@
 import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 
-import { Game, gameDb, GameScore, Me, userDb } from '../db'
+import { Game, gameDb, GameScore, Me, User, userDb } from '../db'
 import { useMe } from './useMe'
 
+export type GameScoreWithUser = GameScore & {
+  user: User,
+}
 type CurrentGame = {
   game: Game,
-  me: Me,
-  top10Scores: GameScore[] | null,
+  me: Me | null,
+  top10Scores: GameScoreWithUser[] | null,
   isLoading: boolean,
 }
 
 export const useCurrentGame = (): CurrentGame => {
   const { pathname, state } = useLocation()
-  const { me } = useMe()
-  const [isLoading, setIsLoading] = useState(false)
-  const [top10Scores, setTop10Scores] = useState<GameScore[] | null>(null)
+  const { me, isLoading: isMeLoading } = useMe()
+  const [isLoading, setIsLoading] = useState(isMeLoading)
+  const [top10Scores, setTop10Scores] = useState<GameScoreWithUser[] | null>(null)
 
   let { game } = (state ?? {}) as { game: Game }
   if (!game) {
@@ -30,9 +33,21 @@ export const useCurrentGame = (): CurrentGame => {
   useEffect(() => {
     setIsLoading(true)
     gameDb().listTop10Scores(game)
+      .then(async scores => {
+        const users = await userDb().list(scores.map(score => score.userId))
+        return scores.map((score, idx) => ({
+          ...score,
+          user: users[idx],
+        }))
+      })
       .then(setTop10Scores)
       .finally(() => setIsLoading(false))
   }, [game])
 
-  return { game, me, top10Scores, isLoading }
+  return {
+    game,
+    me,
+    top10Scores,
+    isLoading: isMeLoading || isLoading,
+  }
 }
