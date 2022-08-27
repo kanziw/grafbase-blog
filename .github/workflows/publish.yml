@@ -1,0 +1,19 @@
+on:
+  - push
+  # push:
+  #   branches:
+  #     - 'main'
+
+name: Publish
+
+jobs:
+  deploy-firebase-configuration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
