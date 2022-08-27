@@ -16,7 +16,7 @@ export const SpaceWorm = () => {
   useEffect(() => {
     gameOnCanvas(canvasRef.current, {
       saveScore: (score: number) => {
-        gameDb().addScore(me.uid, game, score)
+        gameDb().upsertScoreIfHigher(game, me, score)
       },
       askAndGoToMain: () => {
         if (window.confirm('Go to main?')) {
@@ -24,7 +24,7 @@ export const SpaceWorm = () => {
         }
       },
     })
-  }, [navigate, game, me.uid])
+  }, [navigate, game, me])
 
   return (
     <div className="canvasWrap">

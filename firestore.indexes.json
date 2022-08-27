@@ -1,4 +1,14 @@
 {
-  "indexes": [],
+  "indexes": [
+    { 
+      "collectionGroup": "gameScores",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "gameSlug", "arrayConfig": "CONTAINS" },
+        { "fieldPath": "score", "order": "DESCENDING" },
+        { "fieldPath": "scoredAt", "order": "ASCENDING" }
+      ]
+    }
+  ],
   "fieldOverrides": []
 }

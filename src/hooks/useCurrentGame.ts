@@ -8,15 +8,13 @@ export const useCurrentGame = (): { game: Game, me: User } => {
   const { me } = useMe()
 
   let { game } = (state ?? {}) as { game: Game }
-  if (game) {
-    return { game, me }
-  }
-
-  const [, slug] = pathname.split('/games/')
-
-  game = gameDb().findOne(slug)
   if (!game) {
-    throw new Error('Game not found')
+    const [, slug] = pathname.split('/games/')
+
+    game = gameDb().findOne(slug)
+    if (!game) {
+      throw new Error('Game not found')
+    }
   }
 
   return { game, me }
