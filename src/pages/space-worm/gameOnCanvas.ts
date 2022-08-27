@@ -2,14 +2,7 @@
 // @ts-nocheck
 // https://github.com/dancramp/js13k-2021
 
-import type { GameScoreWithUser } from '../../hooks'
-import gameEvents, { Callbacks, onState, State } from './events'
-
-type Props = Callbacks & {
-  top10Scores: GameScoreWithUser[],
-}
-
-export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Props) => {
+export const gameOnCanvas = (spaceWorm_canvas) => {
   const spaceWorm_ctx = spaceWorm_canvas.getContext('2d')
 
   // get the device DPI - to use in the window resize function
@@ -40,7 +33,7 @@ export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Pr
   // controller variables
   let spaceWorm_mouseDown = false
   let spaceWorm_mouseMove = false
-  let spaceWorm_state: State = 'start'
+  let spaceWorm_state = 'start'
   let spaceWorm_drawJoy = false
   let spaceWorm_joyAngle = 0
   let spaceWorm_joyDistance = 0
@@ -78,18 +71,6 @@ export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Pr
 
   // levels
   let spaceWorm_level = 1
-
-  function updateGameState(state: 'levelstart' | 'playing' | 'gameover' | 'levelcomplete' | 'start') {
-    spaceWorm_state = state
-
-    const onState: onState = {
-      state,
-      level: spaceWorm_level,
-      currentStageRemainingStars: spaceWorm_starsRemaining,
-      callbacks,
-    }
-    gameEvents.emit('state', onState)
-  }
 
   spaceWorm_canvas.width = spaceWorm_deviceWidth
   spaceWorm_canvas.height = spaceWorm_deviceHeight
@@ -170,7 +151,7 @@ export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Pr
       spaceWorm_vx = 0
       spaceWorm_vy = 0
       spaceWorm_joyDistance = 0
-      updateGameState('game')
+      spaceWorm_state = 'game'
     }
     if (spaceWorm_state === 'game') {
       spaceWorm_joyEndX = spaceWorm_joyStartX
@@ -180,15 +161,15 @@ export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Pr
       spaceWorm_drawJoy = true
     }
     if (spaceWorm_state === 'gameover') {
-      updateGameState('start')
+      spaceWorm_state = 'start'
     }
     if (spaceWorm_state === 'win') {
-      updateGameState('levelstart')
+      spaceWorm_state = 'levelstart'
     }
     if (spaceWorm_state === 'start') {
       // play a silent note to start the audio context on iOS
       spaceWorm_playerlayNote(0, 0, 0, 0, 0)
-      updateGameState('levelstart')
+      spaceWorm_state = 'levelstart'
     }
   }
 
@@ -338,7 +319,7 @@ export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Pr
       spaceWorm_ctx.arc(spaceWorm_worldX + this.x, spaceWorm_worldY + this.y, this.width, 0, 2 * Math.PI)
       spaceWorm_ctx.fill()
       if (spaceWorm_circleCollision(this, spaceWorm_player)) {
-        updateGameState('gameover')
+        spaceWorm_state = 'gameover'
         if (this.isplaying === false) {
           this.isplaying = true
         }
@@ -394,7 +375,6 @@ export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Pr
       // collision with player
       if (spaceWorm_circleCollision(this, spaceWorm_player)) {
         spaceWorm_score++
-        gameEvents.emit('currentStageScoreIncreased')
         delete this.x
 
         if (this.isplaying === false) {
@@ -528,7 +508,7 @@ export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Pr
       spaceWorm_rectangleCollisionVsPlayer(this, spaceWorm_player)
       const side = spaceWorm_rectangleCollisionVsPlayer(this, spaceWorm_player)
       if (side === 'top' || side === 'right' || side === 'bottom' || side === 'left') {
-        updateGameState('gameover')
+        spaceWorm_state = 'gameover'
       }
     }
   }
@@ -1023,17 +1003,8 @@ export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Pr
       spaceWorm_ctx.fillStyle = 'white'
       spaceWorm_ctx.textAlign = 'center'
       spaceWorm_ctx.fillText('SPACE WORM!', 0, 0)
-
-      const rankFontSize = 1.5
-      spaceWorm_ctx.font = `${rankFontSize}px Arial`
-      spaceWorm_ctx.fillText('---------------------- TOP 10 ----------------------', 0, 3)
-      const rankHeight = 3 + rankFontSize 
-      top10Scores.forEach((score, idx) => {
-        spaceWorm_ctx.fillText(`[${score.rank}]\tscore: ${score.score},\tname: ${score.user.displayName}`, 0, rankHeight + (idx * rankFontSize))
-      })
-      spaceWorm_ctx.fillText('--------------------------------------------------------', 0, rankHeight + (top10Scores.length * rankFontSize))
       spaceWorm_ctx.font = '2px Arial'
-      spaceWorm_ctx.fillText('Click/tap to continue.', 0, rankHeight + (top10Scores.length * rankFontSize) + 2)
+      spaceWorm_ctx.fillText('Click/tap to continue.', 0, 4)
     } else if (spaceWorm_state === 'levelstart') {
       spaceWorm_ctx.font = '4px Arial'
       spaceWorm_ctx.fillStyle = 'white'
@@ -1157,9 +1128,9 @@ export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Pr
       if (spaceWorm_starsRemaining <= 0) {
         spaceWorm_level++
         if (spaceWorm_level === 8) {
-          updateGameState('gamecomplete')
+          spaceWorm_state = 'gamecomplete'
         } else {
-          updateGameState('win')
+          spaceWorm_state = 'win'
         }
       }
     } else if (spaceWorm_state === 'gameover') {
