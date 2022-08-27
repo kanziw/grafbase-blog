@@ -2153,6 +2153,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@heroicons/react@npm:^2.0.8":
+  version: 2.0.8
+  resolution: "@heroicons/react@npm:2.0.8"
+  peerDependencies:
+    react: ">= 16"
+  checksum: 178d850a80a30aa3da371de0e3e090b7de1c16c82ce2c678f0ae21b27bc66b7ac0a9e9a5bd7817debf5121b9f8550921f51f9f771293348ea14cc0a524c493c1
+  languageName: node
+  linkType: hard
+
 "@humanwhocodes/config-array@npm:^0.10.4":
   version: 0.10.4
   resolution: "@humanwhocodes/config-array@npm:0.10.4"
@@ -7832,6 +7841,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "miniapp-game-heaven@workspace:."
   dependencies:
+    "@heroicons/react": ^2.0.8
     "@types/events": ^3.0.0
     "@types/node": ^18.7.13
     "@types/react": ^18.0.17

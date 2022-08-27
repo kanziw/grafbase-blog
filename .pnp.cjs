@@ -33,6 +33,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         [null, {\
           "packageLocation": "./",\
           "packageDependencies": [\
+            ["@heroicons/react", "virtual:a43dc21ffa9be1575175f0b161edef0dd0738ba8d1c67f0dd28ad0fd5f9c8ec06b86ee7dcc9f58847c4536b803db268701942009eb06bee9d5697f6c53ef636a#npm:2.0.8"],\
             ["@types/events", "npm:3.0.0"],\
             ["@types/node", "npm:18.7.13"],\
             ["@types/react", "npm:18.0.17"],\
@@ -3845,6 +3846,28 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["long", "npm:4.0.0"],\
             ["protobufjs", "npm:7.1.0"],\
             ["yargs", "npm:16.2.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@heroicons/react", [\
+        ["npm:2.0.8", {\
+          "packageLocation": "./.yarn/cache/@heroicons-react-npm-2.0.8-8f7fffaac5-178d850a80.zip/node_modules/@heroicons/react/",\
+          "packageDependencies": [\
+            ["@heroicons/react", "npm:2.0.8"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:a43dc21ffa9be1575175f0b161edef0dd0738ba8d1c67f0dd28ad0fd5f9c8ec06b86ee7dcc9f58847c4536b803db268701942009eb06bee9d5697f6c53ef636a#npm:2.0.8", {\
+          "packageLocation": "./.yarn/__virtual__/@heroicons-react-virtual-38d09d64fc/0/cache/@heroicons-react-npm-2.0.8-8f7fffaac5-178d850a80.zip/node_modules/@heroicons/react/",\
+          "packageDependencies": [\
+            ["@heroicons/react", "virtual:a43dc21ffa9be1575175f0b161edef0dd0738ba8d1c67f0dd28ad0fd5f9c8ec06b86ee7dcc9f58847c4536b803db268701942009eb06bee9d5697f6c53ef636a#npm:2.0.8"],\
+            ["@types/react", "npm:18.0.17"],\
+            ["react", "npm:18.2.0"]\
+          ],\
+          "packagePeers": [\
+            "@types/react",\
+            "react"\
           ],\
           "linkType": "HARD"\
         }]\
@@ -10600,6 +10623,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",\
           "packageDependencies": [\
             ["miniapp-game-heaven", "workspace:."],\
+            ["@heroicons/react", "virtual:a43dc21ffa9be1575175f0b161edef0dd0738ba8d1c67f0dd28ad0fd5f9c8ec06b86ee7dcc9f58847c4536b803db268701942009eb06bee9d5697f6c53ef636a#npm:2.0.8"],\
             ["@types/events", "npm:3.0.0"],\
             ["@types/node", "npm:18.7.13"],\
             ["@types/react", "npm:18.0.17"],\

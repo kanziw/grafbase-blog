@@ -27,3 +27,8 @@ ul {
 .users {
   text-align: center;
 }
+
+.edit {
+  height: 0.8rem;
+  cursor: pointer;
+}

@@ -11,6 +11,8 @@ interface UserDb {
 
   find(userId: string): Promise<User | null>
   list(userIds: string[]): Promise<User[]>
+
+  updateDisplayName(me: Me, displayName: string): Promise<void>
 }
 
 export type Me = UserSchema & {
@@ -47,9 +49,7 @@ export const userDb = (): UserDb => ({
       me = userCredential.user as Me
 
       if (!me.displayName) {
-        await updateProfile(userCredential.user, {
-          displayName: `Stranger #${Math.round(Math.random() * 1000)}`,
-        })
+        await this.updateDisplayName(me, `Stranger #${Math.round(Math.random() * 1000)}`)
       }
     }
 
@@ -59,7 +59,7 @@ export const userDb = (): UserDb => ({
   },
 
   async syncToDb(user) {
-    await setDoc(doc(usersCol, user.uid), toSerializableUser(user), {
+    await setDoc(doc(usersCol, user.uid), toUser(user), {
       merge: true,
     })
   },
@@ -74,9 +74,14 @@ export const userDb = (): UserDb => ({
 
     return userIds.map((userId, idx) => users[idx] ?? unknownUser(userId))
   },
+
+  async updateDisplayName(me, displayName) {
+    await updateProfile(me, { displayName })
+    await this.syncToDb(me)
+  },
 })
 
-function toSerializableUser(me: Me): User {
+function toUser(me: Me): User {
   return {
     id: me.uid,
     uid: me.uid,

@@ -12,6 +12,7 @@
     "firebase": "firebase"
   },
   "dependencies": {
+    "@heroicons/react": "^2.0.8",
     "events": "^3.3.0",
     "firebase": "^9.9.3",
     "react": "^18.2.0",
