@@ -7,7 +7,7 @@ import { Helmet } from './components'
 import { gameDb, User, userDb } from './db'
 
 const App = () => {
-  const games = gameDb().listGames()
+  const games = gameDb().list()
   const [me, setMe] = useState<User | null>(null)
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const App = () => {
         <ul>
           {games.map((game) => (
             <li key={game.slug} className="game">
-              <Link to={game.linkUrl}>
+              <Link to={game.linkUrl} state={{ game }}>
                 <div className="game-logo-img"><img src={game.logoImageUrl} alt={game.name} /></div>
                 <div className="game-name">{game.name}</div>
               </Link>
