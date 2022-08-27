@@ -1,4 +1,4 @@
-import { signInAnonymously, User as UserSchema } from 'firebase/auth'
+import { signInAnonymously, updateProfile, User as UserSchema } from 'firebase/auth'
 import { doc, getDoc, setDoc } from 'firebase/firestore'
 
 import { auth } from '../firebase'
@@ -45,12 +45,12 @@ export const userDb = (): UserDb => ({
     if (!me) {
       const userCredential = await signInAnonymously(auth)
       me = userCredential.user as Me
-      me.displayName = `Stranger #${Math.round(Math.random() * 1000)}`
-    }
 
-    const dbMe = await this.find(me.uid)
-    if (dbMe) {
-      me.displayName = dbMe.displayName
+      if (!me.displayName) {
+        await updateProfile(userCredential.user, {
+          displayName: `Stranger #${Math.round(Math.random() * 1000)}`,
+        })
+      }
     }
 
     await this.syncToDb(me)
