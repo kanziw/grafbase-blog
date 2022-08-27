@@ -13,14 +13,15 @@ export const SpaceWorm = () => {
   const saveScore = (score: number) => {
     console.log(' CB saveScore: ', score)
   }
-  const goToMain = useCallback(() => {
-    console.log(' CB goToMain')
-    navigate('/', { replace: true })
+  const askAndGoToMain = useCallback(() => {
+    if (window.confirm('Go to main?')) {
+      navigate('/', { replace: true })
+    }
   }, [navigate])
 
   useEffect(() => {
-    gameOnCanvas(canvasRef.current, { saveScore, goToMain })
-  }, [goToMain])
+    gameOnCanvas(canvasRef.current, { saveScore, askAndGoToMain })
+  }, [askAndGoToMain])
 
   return (
     <div className="canvasWrap">

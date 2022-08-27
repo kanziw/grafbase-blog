@@ -3,7 +3,7 @@ import { EventEmitter } from 'events'
 export type State = 'start' | 'game' | 'levelstart' | 'gameover' | 'gamecomplete' | 'win'
 export type Callbacks = {
   saveScore(score: number): void,
-  goToMain(): void,
+  askAndGoToMain(): void,
 }
 export type onState = {
   state: State,
@@ -19,9 +19,7 @@ let accScore = 0
 
 export const getTotalScore = () => accScore + currentStageScore
 
-gameEvents.on('state', ({ state, level, currentStageRemainingStars, callbacks }: onState) => {
-  console.log(' State changed to:', state, level, currentStageRemainingStars)
-
+gameEvents.on('state', ({ state, callbacks }: onState) => {
   switch (state) {
     case 'levelstart':
       currentStageScore = 0
@@ -30,18 +28,21 @@ gameEvents.on('state', ({ state, level, currentStageRemainingStars, callbacks }:
       accScore += currentStageScore
       currentStageScore = 0
       break
+    case 'gameover':
+      callbacks.saveScore(getTotalScore())
+      gameEvents.emit('gameover', { callbacks })
+      break
+    case 'gamecomplete':
+      callbacks.saveScore(getTotalScore())
+      break
   }
 })
 
 type onGameover = {
   callbacks: Callbacks,
-  totalScore: number,
 }
-gameEvents.once('gameover', ({ callbacks, totalScore }: onGameover) => {
-  callbacks.saveScore(totalScore)
-  if (window.confirm('Go to main?')) {
-    callbacks.goToMain()
-  }
+gameEvents.on('gameover', ({ callbacks }: onGameover) => {
+  callbacks.askAndGoToMain()
 })
 
 gameEvents.on('currentStageScoreIncreased', () => {
