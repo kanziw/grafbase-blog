@@ -4,22 +4,14 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import { Helmet } from './components'
-import { User, userDb } from './db'
-
-const games = [
-  {
-    slug: 'space-worm',
-    name: 'SpaceWorm',
-    linkUrl: '/space-worm',
-    logoImageUrl: '/images/space-worm.jpg',
-  },
-]
+import { gameDb, User, userDb } from './db'
 
 const App = () => {
+  const games = gameDb().listGames()
   const [me, setMe] = useState<User | null>(null)
 
   useEffect(() => {
-    userDb.getMe().then(me => setMe(me))
+    userDb().getMe().then(me => setMe(me))
   }, [])
 
   return (
