@@ -13,12 +13,12 @@ import App from './App'
 import { SpaceWorm } from './pages'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  // <React.StrictMode>
-  <Router>
-    <Routes>
-      <Route path="/" element={<App />} />
-      <Route path="/space-worm" element={<SpaceWorm />} />
-    </Routes>
-  </Router>,
-  // </React.StrictMode>,
+  <React.StrictMode>
+    <Router>
+      <Routes>
+        <Route path="/" element={<App />} />
+        <Route path="/space-worm" element={<SpaceWorm />} />
+      </Routes>
+    </Router>,
+  </React.StrictMode>,
 )

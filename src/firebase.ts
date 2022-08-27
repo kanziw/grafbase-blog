@@ -1,5 +1,7 @@
 import { getAnalytics } from 'firebase/analytics'
 import { initializeApp } from 'firebase/app'
+import { connectAuthEmulator, getAuth } from 'firebase/auth'
+import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore'
 
 const firebaseConfig = {
   apiKey: 'AIzaSyASBpyCRmwl3H0_pMHvG_2rXNvLDkKyixk',
@@ -12,4 +14,14 @@ const firebaseConfig = {
 }
 
 const app = initializeApp(firebaseConfig)
+
+export const auth = getAuth()
+export const db = getFirestore(app)
+
+const shouldUseEmulator = process.env.NODE_ENV !== 'production'
+if (shouldUseEmulator) {
+  connectAuthEmulator(auth, 'http://localhost:9099')
+  connectFirestoreEmulator(db, 'localhost', 8080)
+}
+
 const _analytics = getAnalytics(app)
