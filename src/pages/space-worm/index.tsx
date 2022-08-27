@@ -1,38 +1,16 @@
 import './space-worm.css'
 
 import { useEffect, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
 
 import { Helmet } from '../../components/Helmet'
-import { gameDb } from '../../db'
-import { useCurrentGame } from '../../hooks'
 import { gameOnCanvas } from './gameOnCanvas'
 
 export const SpaceWorm = () => {
   const canvasRef = useRef(null)
-  const navigate = useNavigate()
-  const { game, me, top10Scores, isLoading } = useCurrentGame()
 
   useEffect(() => {
-    if (me && top10Scores && canvasRef.current) {
-      gameOnCanvas(canvasRef.current, {
-        top10Scores,
-        saveScore: (score: number) => {
-          gameDb().upsertScoreIfHigher(game, me, score)
-        },
-        askAndGoToMain: () => {
-          if (window.confirm('Go to main?')) {
-            navigate('/', { replace: true })
-          }
-        },
-      })
-    }
-  }, [me, top10Scores, canvasRef.current])
-
-  if (isLoading) {
-    return <div>Loading..</div>
-  }
-
+    gameOnCanvas(canvasRef.current)
+  }, [])
   return (
     <div className="canvasWrap">
       <Helmet title="SpaceWorm" />
