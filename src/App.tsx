@@ -4,11 +4,11 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import { Helmet } from './components'
-import { gameDb, User, userDb } from './db'
+import { gameDb, Me, userDb } from './db'
 
 const App = () => {
   const games = gameDb().list()
-  const [me, setMe] = useState<User | null>(null)
+  const [me, setMe] = useState<Me | null>(null)
 
   useEffect(() => {
     userDb().getMe().then(me => setMe(me))

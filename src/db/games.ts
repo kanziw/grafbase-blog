@@ -1,13 +1,13 @@
 import { doc, getDoc, getDocs, limit, orderBy, query, setDoc, Timestamp, where } from 'firebase/firestore'
 
 import { getCollection, WithId, withId } from './core'
-import type { User } from './users'
+import type { Me } from './users'
 
 interface GameDb {
   list(): GameWithLinkUrl[],
   findOne(slug: string): Game,
 
-  upsertScoreIfHigher(game: Game, user: User, score: number): Promise<void>,
+  upsertScoreIfHigher(game: Game, me: Me, score: number): Promise<void>,
   listTop10Scores(game: Game): Promise<GameScore[]>,
 }
 
@@ -51,12 +51,12 @@ export const gameDb = (): GameDb => ({
     return game
   },
 
-  async upsertScoreIfHigher(game, user, score) {
+  async upsertScoreIfHigher(game, me, score) {
     if (score <= 0) {
       return
     }
 
-    const ref = doc(gameScoresCol, gameScoreId(game.slug, user.uid))
+    const ref = doc(gameScoresCol, gameScoreId(game.slug, me.uid))
     const snapshot = await getDoc(ref)
     if (snapshot.exists() && score <= snapshot.data().score) {
       return
@@ -65,7 +65,7 @@ export const gameDb = (): GameDb => ({
     await setDoc<GameScoreWithoutId>(ref, {
       gameSlug: game.slug,
       score,
-      userId: user.uid,
+      userId: me.uid,
       scoredAt: Timestamp.now(),
     }, { merge: true })
   },

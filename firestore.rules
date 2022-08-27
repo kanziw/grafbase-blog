@@ -5,6 +5,11 @@ service cloud.firestore {
       return request.auth.uid != null;
     }
 
+    match /users/{user} {
+      allow read: if true;
+      allow write: if signedIn() && request.auth.uid == request.resource.data.uid;
+    }
+
     match /gameScores/{gameScore} {
       allow read: if true;
       allow write: if signedIn() && request.auth.uid == request.resource.data.userId;

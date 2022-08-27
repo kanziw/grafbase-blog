@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 
-import { Game, gameDb, GameScore, User } from '../db'
+import { Game, gameDb, GameScore, Me, userDb } from '../db'
 import { useMe } from './useMe'
 
 type CurrentGame = {
   game: Game,
-  me: User,
+  me: Me,
   top10Scores: GameScore[] | null,
   isLoading: boolean,
 }
