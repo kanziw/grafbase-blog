@@ -33,7 +33,6 @@ export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Pr
 
   let spaceWorm_deviceWidth = window.innerWidth
   let spaceWorm_deviceHeight = window.innerHeight
-  console.log('', { spaceWorm_deviceWidth, spaceWorm_deviceHeight })
 
   // get scale ratio for scaling up
   let spaceWorm_scaleFitNative = Math.min(spaceWorm_deviceWidth / spaceWorm_nativeWidth, spaceWorm_deviceHeight / spaceWorm_nativeHeight)
@@ -78,7 +77,7 @@ export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Pr
   const spaceWorm_player = new spaceWorm_playerComponent()
 
   // levels
-  let spaceWorm_level = 5
+  let spaceWorm_level = 1
 
   function updateGameState(state: 'levelstart' | 'playing' | 'gameover' | 'levelcomplete' | 'start') {
     spaceWorm_state = state
