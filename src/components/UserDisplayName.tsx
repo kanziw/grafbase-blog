@@ -31,7 +31,7 @@ export const UserDisplayName: FC<{me: Me}> = ({ me }) => {
     : <PencilSquareIcon style={{ height: '0.8rem', cursor: 'pointer' }} onClick={onDisplayNameEditButtonClick} />
 
   return (
-    <div style={{ textAlign: 'center' }}>
+    <div>
       👋 Hello, {isDisplayNameEditing
       ? <input
           type='text'

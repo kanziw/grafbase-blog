@@ -3,21 +3,21 @@ import './App.css'
 import { Link } from 'react-router-dom'
 
 import { Helmet, UserDisplayName } from './components'
-import { gameDb, userDb } from './db'
+import { gameDb } from './db'
 import { useMe } from './hooks'
 
 const App = () => {
   const games = gameDb().list()
   const { me, isLoading } = useMe()
-  if (isLoading || !me) {
-    return <div>Loading...</div>
-  }
+  const isLoadedDone = !isLoading && me
 
   return (
     <>
       <Helmet isRoot={true} />
       <h1 className="title">미니앱게임천국👼</h1>
-      <UserDisplayName me={me} />
+      <div className="display-name">
+        {isLoadedDone ? <UserDisplayName me={me} /> : <div>Loading...</div>}
+      </div>
       <section className="games">
         <ul>
           {games.map((game) => (
