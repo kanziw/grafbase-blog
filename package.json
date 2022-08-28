@@ -7,6 +7,10 @@
     "dev:emulators": "firebase emulators:start",
     "build": "tsc && vite build",
     "preview": "vite preview",
+    "preview:watch": "concurrently \"yarn:watch:*\"",
+    "watch:tsc": "tsc --watch",
+    "watch:vite": "vite build --watch",
+    "watch:preview": "vite preview",
     "lint": "eslint .",
     "__FOR COMMAND LINE INTERFACE__": "_______________",
     "firebase": "firebase"

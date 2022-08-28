@@ -4,7 +4,7 @@
       "collectionGroup": "gameScores",
       "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "gameSlug", "arrayConfig": "CONTAINS" },
+        { "fieldPath": "gameSlug", "order": "ASCENDING" },
         { "fieldPath": "score", "order": "DESCENDING" },
         { "fieldPath": "scoredAt", "order": "ASCENDING" }
       ]
