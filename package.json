@@ -2,18 +2,31 @@
   "name": "miniapp-game-heaven",
   "packageManager": "yarn@3.2.1",
   "scripts": {
-    "dev": "vite --host",
+    "dev": "concurrently \"yarn:dev:*\"",
+    "dev:web": "vite --host",
+    "dev:emulators": "firebase emulators:start",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "lint": "eslint ."
+    "preview:watch": "concurrently \"yarn:watch:*\"",
+    "watch:tsc": "tsc --watch",
+    "watch:vite": "vite build --watch",
+    "watch:preview": "vite preview",
+    "lint": "eslint .",
+    "__FOR COMMAND LINE INTERFACE__": "_______________",
+    "firebase": "firebase"
   },
   "dependencies": {
+    "@heroicons/react": "^2.0.8",
+    "events": "^3.3.0",
+    "firebase": "^9.9.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
     "react-router-dom": "^6.3.0"
   },
   "devDependencies": {
+    "@types/events": "^3.0.0",
+    "@types/node": "^18.7.13",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "@types/react-helmet": "^6.1.5",
@@ -30,6 +43,7 @@
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "^7.30.1",
     "eslint-plugin-simple-import-sort": "^7.0.0",
+    "firebase-tools": "^11.8.0",
     "typescript": "^4.7.4",
     "vite": "^3.0.9"
   }
