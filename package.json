@@ -6,6 +6,7 @@
     "dev:web": "vite --host",
     "dev:emulators": "firebase emulators:start",
     "build": "tsc && vite build",
+    "zip": "yarn build && cd dist && zip -r Archive.zip ./",
     "preview": "vite preview",
     "preview:watch": "concurrently \"yarn:watch:*\"",
     "watch:tsc": "tsc --watch",
