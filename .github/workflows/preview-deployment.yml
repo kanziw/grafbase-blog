@@ -11,7 +11,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: v16.16.0
-      - run: yarn build
+      - run: |
+          yarn install --immutable --immutable-cache
+          yarn build
 
       - id: karrotmini-deployment
         uses: karrotmini/deployment-site@v0.1.0-beta
