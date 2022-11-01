@@ -19,5 +19,5 @@ jobs:
         uses: karrotmini/deployment-site@v0.1.0-beta
         with:
           api-key: ${{ secrets.KARROTMINI_API_KEY }}
-          build-output-directory: ./build
+          build-output-directory: ./dist
           preview-id: gh-pr-${{ github.event.pull_request.number }}
