@@ -21,6 +21,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         <Route path="games" element={<LoginFirst />}>
           <Route path="space-worm" element={<SpaceWorm />} />
         </Route>
+        <Route path="*" element={<App />} />
       </Routes>
     </Router>,
   </React.StrictMode>,
