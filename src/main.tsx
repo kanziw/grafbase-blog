@@ -1,5 +1,6 @@
 import './global.css'
 import './firebase'
+import '@karrotmini/sdk/index.css'
 
 import React from 'react'
 import ReactDOM from 'react-dom/client'
