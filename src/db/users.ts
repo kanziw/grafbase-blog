@@ -66,7 +66,7 @@ export const userDb = (): UserDb => ({
         karrotUser.id,
       )
       if (karrotminiUser) {
-        return karrotminiUser
+        return this.updateKarrotminiUser(karrotminiUser, karrotUser)
       }
 
       return this.insertKarrotminiUser(karrotUser)
