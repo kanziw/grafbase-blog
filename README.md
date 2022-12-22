@@ -8,6 +8,11 @@
 - Favicon: https://favicon.io/emoji-favicons/worm/
 - Logo: DALL·E https://labs.openai.com/
 
+### Sudoku
+
+- Game: https://github.com/andreynering/sudoku
+- Logo: https://www.freepik.com/free-photos-vectors/sudoku-game
+
 ## Firebase
 
 Firestore 등의 변경이 필요하다면 수동으로 해당 룰 배포 진행이 필요
