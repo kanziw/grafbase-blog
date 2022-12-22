@@ -14,7 +14,7 @@ const MARGIN_TOP = -100;
 export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Props) => {
   const spaceWorm_ctx = spaceWorm_canvas.getContext('2d')
 
-  const startY = 0;
+  const startY = -10
   const baseFillText = (text: string, x: number, y: number) => {
     spaceWorm_ctx.fillText(text, x, y + startY)
   }
@@ -230,7 +230,7 @@ export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Pr
   }
 
   function spaceWorm_drawJoystick() {
-    const minusY = 10
+    const minusY = startY + 10
 
     // draw the joysticks
     spaceWorm_ctx.globalAlpha = 0.5
