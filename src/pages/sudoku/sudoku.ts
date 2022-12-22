@@ -10,7 +10,6 @@ export type ICell = {
 
 export type IGame = {
   cells: ICell[][];
-  time: Date;
 }
 
 function newCell(i: number, j: number, value: number | null, editable: boolean): ICell {
@@ -23,10 +22,17 @@ function newCell(i: number, j: number, value: number | null, editable: boolean):
   }
 }
 
-function newGame(cells: ICell[][], time: Date | null): IGame {
+export const newBlockCell = (cell: ICell): ICell => ({
+  value: null,
+  editable: false,
+  hasConflict: false,
+  i: cell.i,
+  j: cell.j,
+})
+
+function newGame(cells: ICell[][]): IGame {
   return {
     cells,
-    time: time ?? new Date(0, 0, 0, 0, 0, 0, 0),
   }
 }
 
@@ -117,5 +123,5 @@ export function boardToGame(board: string) {
     }
     game.push(line)
   }
-  return newGame(game, null)
+  return newGame(game)
 }

@@ -1,8 +1,6 @@
-import './index.css'
-
 import React from 'react'
 
-import { ICell, IGame, isComplete } from './sudoku'
+import { ICell, IGame, newBlockCell } from './sudoku'
 
 type CellProps = {
     cell: ICell,
@@ -84,19 +82,13 @@ class Cell extends React.Component<CellProps> {
   }
 }
 
-function f(num: number) {
-  if (num < 10) {
-    return '0' + num
-  } else {
-    return '' + num
-  }
-}
-
 export const Game = ({
   game,
+  isPause,
   onCellValueChange,
 }: {
   game: IGame,
+  isPause: boolean,
   onCellValueChange(value: { i: number, j: number, value: number | null }): void,
  }) => {
   return (
@@ -106,7 +98,7 @@ export const Game = ({
           {game.cells.map((line, i) => (
             <tr key={i}>
               {line.map((cell) => (
-                <Cell cell={cell} key={cell.j} dispatch={onCellValueChange} />
+                <Cell cell={isPause ? newBlockCell(cell) : cell} key={cell.j} dispatch={onCellValueChange} />
               ))}
             </tr>
           ))}
