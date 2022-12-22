@@ -9,10 +9,12 @@ type Props = Callbacks & {
   top10Scores: GameScoreWithUser[],
 }
 
+const MARGIN_TOP = -100;
+
 export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Props) => {
   const spaceWorm_ctx = spaceWorm_canvas.getContext('2d')
 
-  const startY = -5;
+  const startY = 0;
   const baseFillText = (text: string, x: number, y: number) => {
     spaceWorm_ctx.fillText(text, x, y + startY)
   }
@@ -160,7 +162,7 @@ export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Pr
       spaceWorm_scaleFitNative * spaceWorm_scale, 0,
       0, spaceWorm_scaleFitNative * spaceWorm_scale,
       Math.floor(spaceWorm_deviceWidth / 2) * spaceWorm_scale,
-      Math.floor(spaceWorm_deviceHeight / 2) * spaceWorm_scale,
+      Math.floor(spaceWorm_deviceHeight / 2) * spaceWorm_scale + MARGIN_TOP,
     )
 
     spaceWorm_createBg()
@@ -228,7 +230,7 @@ export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Pr
   }
 
   function spaceWorm_drawJoystick() {
-    const minusY = startY - 30
+    const minusY = 10
 
     // draw the joysticks
     spaceWorm_ctx.globalAlpha = 0.5
@@ -1029,7 +1031,7 @@ export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Pr
 
     // different screens based on state
     if (spaceWorm_state === 'start') {
-      const fillText = makeFillText(-20)
+      const fillText = makeFillText(-10)
       spaceWorm_ctx.font = '8px Arial'
       spaceWorm_ctx.fillStyle = 'white'
       spaceWorm_ctx.textAlign = 'center'
@@ -1046,7 +1048,7 @@ export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Pr
       spaceWorm_ctx.font = '3px Arial'
       fillText('Click/tap to continue.', 0, rankHeight + (top10Scores.length * rankCellHeight) + 4)
     } else if (spaceWorm_state === 'levelstart') {
-      const fillText = makeFillText(-5);
+      const fillText = makeFillText(0);
 
       spaceWorm_ctx.font = '4px Arial'
       spaceWorm_ctx.fillStyle = 'white'
@@ -1166,7 +1168,7 @@ export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Pr
       spaceWorm_ctx.fillStyle = 'white'
       spaceWorm_ctx.textAlign = 'left'
       
-      const fillText = makeFillText(0);
+      const fillText = makeFillText(5);
       fillText('Stars: ' + spaceWorm_starsRemaining,
         ((-spaceWorm_deviceWidth / 2) + 16) / spaceWorm_scaleFitNative,
         ((-spaceWorm_deviceHeight / 2) + 64) / spaceWorm_scaleFitNative,
