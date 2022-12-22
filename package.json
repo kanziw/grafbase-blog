@@ -4,7 +4,7 @@
     "dev": "concurrently \"yarn:dev:*\"",
     "dev:web": "vite --host",
     "dev:emulators": "firebase emulators:start",
-    "build": "tsc && vite build && cp ./dist/index.html ./dist/404.html",
+    "build": "tsc && vite build",
     "zip": "yarn build && cd dist && zip -r Archive.zip ./",
     "preview": "vite preview",
     "preview:watch": "concurrently \"yarn:watch:*\"",
