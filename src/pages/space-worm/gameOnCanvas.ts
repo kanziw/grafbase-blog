@@ -1019,17 +1019,17 @@ export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Pr
 
     // different screens based on state
     if (spaceWorm_state === 'start') {
-      const startY = -16;
+      const startY = -25;
       const fillText = (text: string, height: number) => {
         spaceWorm_ctx.fillText(text, 0, height + startY)
       }
 
-      spaceWorm_ctx.font = '4px Arial'
+      spaceWorm_ctx.font = '8px Arial'
       spaceWorm_ctx.fillStyle = 'white'
       spaceWorm_ctx.textAlign = 'center'
       fillText('SPACE WORM!', -4)
 
-      const rankCellHeight = 1.8
+      const rankCellHeight = 4
       spaceWorm_ctx.font = `${rankCellHeight * 0.8}px Arial`
       fillText('---------------------- TOP 10 ----------------------', 3)
       const rankHeight = 3 + rankCellHeight 
@@ -1037,8 +1037,8 @@ export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Pr
         fillText(`[${score.rank}]\tscore: ${score.score},\tname: ${score.user.displayName}`, rankHeight + (idx * rankCellHeight))
       })
       fillText('--------------------------------------------------------', rankHeight + (top10Scores.length * rankCellHeight))
-      spaceWorm_ctx.font = '2px Arial'
-      fillText('Click/tap to continue.', 0, rankHeight + (top10Scores.length * rankCellHeight) + 2)
+      spaceWorm_ctx.font = '3px Arial'
+      fillText('Click/tap to continue.', rankHeight + (top10Scores.length * rankCellHeight) + 4)
     } else if (spaceWorm_state === 'levelstart') {
       spaceWorm_ctx.font = '4px Arial'
       spaceWorm_ctx.fillStyle = 'white'
