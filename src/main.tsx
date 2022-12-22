@@ -12,7 +12,7 @@ import {
 } from 'react-router-dom'
 
 import App from './App'
-import { SpaceWorm } from './pages'
+import { SpaceWorm, Sudoku } from './pages'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -20,8 +20,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <Routes>
         <Route path="/" index element={<App />} />
         <Route path="/games/space-worm" element={<SpaceWorm />} />
+        <Route path="/games/sudoku" element={<Sudoku />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
-    </Router>,
+    </Router>
   </React.StrictMode>,
 )

@@ -1,0 +1,45 @@
+.sudoku-table {
+    border: 3px solid black;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 16pt;
+}
+.sudoku-table td {
+    border: 1px solid black;
+    width: 38px;
+    height: 38px;
+}
+.sudoku-table input {
+    width: 38px;
+    height: 38px;
+    border: 0px;
+    text-align: center;
+    padding: 0px;
+}
+.i2, .i5 {
+    border-bottom: 3px solid black !important;
+}
+.j2, .j5 {
+    border-right: 3px solid black !important;
+}
+.not-editable input {
+    font-weight: bold;
+}
+.has-conflict input {
+    color: red;
+}
+@media (min-width: 600px) {
+    .sudoku-table {
+        margin-top: 50px;
+   }
+}
+.bottom-menu {
+    text-align: center;
+}
+.congratulations {
+    text-align: center;
+    color: red;
+}
+.index {
+    text-align: center;
+}

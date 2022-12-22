@@ -25,6 +25,7 @@ export type Game = {
   slug: string;
   name: string;
   logoImageUrl: string;
+  width: string;
 };
 type GameWithLinkUrl = Game & { linkUrl: string };
 type GameScoreWithoutId = {
@@ -42,6 +43,13 @@ const games: Game[] = [
     slug: 'space-worm',
     name: 'SpaceWorm',
     logoImageUrl: '/images/space-worm.jpg',
+    width: '41%',
+  },
+  {
+    slug: 'sudoku',
+    name: 'Sudoku',
+    logoImageUrl: '/images/sudoku.webp',
+    width: '55%',
   },
 ]
 

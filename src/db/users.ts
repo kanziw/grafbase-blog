@@ -63,12 +63,12 @@ export const userDb = (): UserDb => ({
         scopes: ['account/profile'],
       })
 
-      const karrotminiUser = await this.findOneUserByKarrotUserId(
+      const user = await this.findOneUserByKarrotUserId(
         karrotUser.id,
       )
 
-      me = karrotminiUser
-        ? await this.updateKarrotminiUser(karrotminiUser, karrotUser)
+      me = user
+        ? await this.updateKarrotminiUser(user, karrotUser)
         : await this.insertKarrotminiUser(karrotUser)
     } else {
       let fbUser = auth.currentUser as FirebaseUser | null

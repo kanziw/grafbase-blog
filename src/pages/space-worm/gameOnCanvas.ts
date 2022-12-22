@@ -9,8 +9,18 @@ type Props = Callbacks & {
   top10Scores: GameScoreWithUser[],
 }
 
+const MARGIN_TOP = -100;
+
 export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Props) => {
   const spaceWorm_ctx = spaceWorm_canvas.getContext('2d')
+
+  const startY = 0
+  const baseFillText = (text: string, x: number, y: number) => {
+    spaceWorm_ctx.fillText(text, x, y + startY)
+  }
+  const makeFillText = (additionalHeight: number) => (text: string, x: number, y: number) => {
+    baseFillText(text, x, y + additionalHeight)
+  }
 
   // get the device DPI - to use in the window resize function
   let spaceWorm_scale = window.devicePixelRatio
@@ -152,7 +162,7 @@ export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Pr
       spaceWorm_scaleFitNative * spaceWorm_scale, 0,
       0, spaceWorm_scaleFitNative * spaceWorm_scale,
       Math.floor(spaceWorm_deviceWidth / 2) * spaceWorm_scale,
-      Math.floor(spaceWorm_deviceHeight / 2) * spaceWorm_scale,
+      Math.floor(spaceWorm_deviceHeight / 2) * spaceWorm_scale + MARGIN_TOP,
     )
 
     spaceWorm_createBg()
@@ -220,6 +230,8 @@ export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Pr
   }
 
   function spaceWorm_drawJoystick() {
+    const minusY = startY - 5
+
     // draw the joysticks
     spaceWorm_ctx.globalAlpha = 0.5
     spaceWorm_ctx.fillStyle = 'white'
@@ -228,7 +240,7 @@ export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Pr
     spaceWorm_ctx.beginPath()
     spaceWorm_ctx.arc(
       (spaceWorm_joyStartX - (spaceWorm_deviceWidth / 2)) / spaceWorm_scaleFitNative,
-      (spaceWorm_joyStartY - (spaceWorm_deviceHeight / 2)) / spaceWorm_scaleFitNative,
+      (spaceWorm_joyStartY + minusY - (spaceWorm_deviceHeight / 2)) / spaceWorm_scaleFitNative,
       4, 0, 2 * Math.PI)
     spaceWorm_ctx.fill()
 
@@ -236,7 +248,7 @@ export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Pr
     spaceWorm_ctx.beginPath()
     spaceWorm_ctx.arc(
       (spaceWorm_joyEndX - (spaceWorm_deviceWidth / 2)) / spaceWorm_scaleFitNative,
-      (spaceWorm_joyEndY - (spaceWorm_deviceHeight / 2)) / spaceWorm_scaleFitNative,
+      (spaceWorm_joyEndY + minusY - (spaceWorm_deviceHeight / 2)) / spaceWorm_scaleFitNative,
       2, 0, 2 * Math.PI)
     spaceWorm_ctx.fill()
     spaceWorm_ctx.globalAlpha = 1
@@ -1019,64 +1031,69 @@ export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Pr
 
     // different screens based on state
     if (spaceWorm_state === 'start') {
-      spaceWorm_ctx.font = '4px Arial'
+      const fillText = makeFillText(-20)
+      spaceWorm_ctx.font = '8px Arial'
       spaceWorm_ctx.fillStyle = 'white'
       spaceWorm_ctx.textAlign = 'center'
-      spaceWorm_ctx.fillText('SPACE WORM!', 0, 0)
+      fillText('SPACE WORM!', 0, -4)
 
-      const rankFontSize = 1.5
-      spaceWorm_ctx.font = `${rankFontSize}px Arial`
-      spaceWorm_ctx.fillText('---------------------- TOP 10 ----------------------', 0, 3)
-      const rankHeight = 3 + rankFontSize 
+      const rankCellHeight = 4
+      spaceWorm_ctx.font = `${rankCellHeight * 0.8}px Arial`
+      fillText('---------------------- TOP 10 ----------------------', 0, 3)
+      const rankHeight = 3 + rankCellHeight 
       top10Scores.forEach((score, idx) => {
-        spaceWorm_ctx.fillText(`[${score.rank}]\tscore: ${score.score},\tname: ${score.user.displayName}`, 0, rankHeight + (idx * rankFontSize))
+        fillText(`[${score.rank}]\tscore: ${score.score},\tname: ${score.user.displayName}`, 0, rankHeight + (idx * rankCellHeight))
       })
-      spaceWorm_ctx.fillText('--------------------------------------------------------', 0, rankHeight + (top10Scores.length * rankFontSize))
-      spaceWorm_ctx.font = '2px Arial'
-      spaceWorm_ctx.fillText('Click/tap to continue.', 0, rankHeight + (top10Scores.length * rankFontSize) + 2)
+      fillText('--------------------------------------------------------', 0, rankHeight + (top10Scores.length * rankCellHeight))
+      spaceWorm_ctx.font = '3px Arial'
+      fillText('Click/tap to continue.', 0, rankHeight + (top10Scores.length * rankCellHeight) + 4)
     } else if (spaceWorm_state === 'levelstart') {
+      const fillText = makeFillText(-15);
+
       spaceWorm_ctx.font = '4px Arial'
       spaceWorm_ctx.fillStyle = 'white'
       spaceWorm_ctx.textAlign = 'center'
-      spaceWorm_ctx.fillText('Level: ' + spaceWorm_level, 0, -1)
+      fillText('Level: ' + spaceWorm_level, 0, -1)
       spaceWorm_ctx.font = '2px Arial'
       if (spaceWorm_level === 1) {
-        spaceWorm_ctx.fillText('Collect all of the yellow stars.', 0, 2)
-        spaceWorm_ctx.fillText('Touch screen and drag or use mouse to move.', 0, 4)
+        fillText('Collect all of the yellow stars.', 0, 2)
+        fillText('Touch screen and drag or use mouse to move.', 0, 4)
       }
       if (spaceWorm_level === 2) {
-        spaceWorm_ctx.fillText('Black space is impassible.', 0, 2)
-        spaceWorm_ctx.fillText('Slow down by not moving the joystick too far.', 0, 4)
+        fillText('Black space is impassible.', 0, 2)
+        fillText('Slow down by not moving the joystick too far.', 0, 4)
       }
       if (spaceWorm_level === 3) {
-        spaceWorm_ctx.fillText('Red meteors will destroy you.', 0, 2)
-        spaceWorm_ctx.fillText('Your tail is not affected.', 0, 4)
+        fillText('Red meteors will destroy you.', 0, 2)
+        fillText('Your tail is not affected.', 0, 4)
       }
       if (spaceWorm_level === 4) {
-        spaceWorm_ctx.fillText('Red space will destroy you.', 0, 2)
-        spaceWorm_ctx.fillText("You don't want to be an ex-worm...", 0, 4)
+        fillText('Red space will destroy you.', 0, 2)
+        fillText("You don't want to be an ex-worm...", 0, 4)
       }
       if (spaceWorm_level === 5) {
-        spaceWorm_ctx.fillText("Let's put these things together.", 0, 2)
-        spaceWorm_ctx.fillText("Collect all stars, don't be an ex-worm!", 0, 4)
+        fillText("Let's put these things together.", 0, 2)
+        fillText("Collect all stars, don't be an ex-worm!", 0, 4)
       }
       if (spaceWorm_level === 6) {
-        spaceWorm_ctx.fillText('Mind the red space!', 0, 2)
-        spaceWorm_ctx.fillText('You may need to check your speed...', 0, 4)
+        fillText('Mind the red space!', 0, 2)
+        fillText('You may need to check your speed...', 0, 4)
       }
       if (spaceWorm_level === 7) {
-        spaceWorm_ctx.fillText("Let's try a maze", 0, 2)
-        spaceWorm_ctx.fillText('Be careful enemies now roam the map...', 0, 4)
+        fillText("Let's try a maze", 0, 2)
+        fillText('Be careful enemies now roam the map...', 0, 4)
       }
       spaceWorm_ctx.font = '1px Arial'
-      spaceWorm_ctx.fillText('Click/tap to continue.', 0, 6)
+      fillText('Click/tap to continue.', 0, 6)
     } else if (spaceWorm_state === 'gamecomplete') {
+      const fillText = makeFillText(-15);
+
       spaceWorm_ctx.font = '4px Arial'
       spaceWorm_ctx.fillStyle = 'white'
       spaceWorm_ctx.textAlign = 'center'
-      spaceWorm_ctx.fillText('CONGRATULATIONS!', 0, 0)
+      fillText('CONGRATULATIONS!', 0, 0)
       spaceWorm_ctx.font = '2px Arial'
-      spaceWorm_ctx.fillText('You completed my little game!', 0, 4)
+      fillText('You completed my little game!', 0, 4)
     } else if (spaceWorm_state === 'game') {
       // this is the actual game loop
 
@@ -1150,7 +1167,9 @@ export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Pr
       spaceWorm_ctx.font = '4px Arial'
       spaceWorm_ctx.fillStyle = 'white'
       spaceWorm_ctx.textAlign = 'left'
-      spaceWorm_ctx.fillText('Stars: ' + spaceWorm_starsRemaining,
+      
+      const fillText = makeFillText(6);
+      fillText('Stars: ' + spaceWorm_starsRemaining,
         ((-spaceWorm_deviceWidth / 2) + 16) / spaceWorm_scaleFitNative,
         ((-spaceWorm_deviceHeight / 2) + 64) / spaceWorm_scaleFitNative,
       )
@@ -1163,19 +1182,23 @@ export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Pr
         }
       }
     } else if (spaceWorm_state === 'gameover') {
+      const fillText = makeFillText(-10);
+
       spaceWorm_ctx.font = '4px Arial'
       spaceWorm_ctx.fillStyle = 'white'
       spaceWorm_ctx.textAlign = 'center'
-      spaceWorm_ctx.fillText('Oh no! You got ex-wormed!', 0, 0)
+      fillText('Oh no! You got ex-wormed!', 0, 0)
       spaceWorm_ctx.font = '2px Arial'
-      spaceWorm_ctx.fillText('Click/tap to restart the level.', 0, 4)
+      fillText('Click/tap to restart the level.', 0, 4)
     } else if (spaceWorm_state === 'win') {
+      const fillText = makeFillText(-10);
+
       spaceWorm_ctx.font = '4px Arial'
       spaceWorm_ctx.fillStyle = 'white'
       spaceWorm_ctx.textAlign = 'center'
-      spaceWorm_ctx.fillText('Well done!', 0, 0)
+      fillText('Well done!', 0, 0)
       spaceWorm_ctx.font = '2px Arial'
-      spaceWorm_ctx.fillText('Click/tap to continue.', 0, 4)
+      fillText('Click/tap to continue.', 0, 4)
     }
     requestAnimationFrame(spaceWorm_update)
   }
