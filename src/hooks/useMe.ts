@@ -1,14 +1,16 @@
 import { karrotmini } from '@karrotmini/sdk'
 import { useEffect, useState } from 'react'
 
-import { User, userDb } from '../db'
+import { me as initialMe, User, userDb } from '../db'
 
 export const useMe = () => {
   const [isLoading, setIsLoading] = useState(false)
-  const [me, setMe] = useState<User | null>(null)
+  const [me, setMe] = useState<User | null>(initialMe)
 
   useEffect(() => {
-    setIsLoading(true)
+    if (!initialMe) {
+      setIsLoading(true)
+    }
     userDb()
       .getMe()
       .then(setMe)

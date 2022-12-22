@@ -4,7 +4,7 @@ import {
   updateProfile,
   User as UserSchema,
 } from 'firebase/auth'
-import { doc, getDoc, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore'
+import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore'
 
 import { auth } from '../firebase'
 import { getCollection } from './core'
@@ -54,6 +54,7 @@ const unknownUser = (id: string): User => ({
 const usersCol = getCollection<User>('users')
 const karrotminiUsersCol = getCollection<User>('karrotminiUsers')
 const isKarrotmini = !karrotmini.getKarrotUser().id.startsWith('id:')
+export let me: User | null = null
 
 export const userDb = (): UserDb => ({
   async getMe() {
@@ -65,22 +66,24 @@ export const userDb = (): UserDb => ({
       const karrotminiUser = await this.findOneUserByKarrotUserId(
         karrotUser.id,
       )
-      if (karrotminiUser) {
-        return this.updateKarrotminiUser(karrotminiUser, karrotUser)
+
+      me = karrotminiUser
+        ? await this.updateKarrotminiUser(karrotminiUser, karrotUser)
+        : await this.insertKarrotminiUser(karrotUser)
+    } else {
+      let fbUser = auth.currentUser as FirebaseUser | null
+      if (!fbUser) {
+        const userCredential = await signInAnonymously(auth)
+        fbUser = userCredential.user as FirebaseUser
+      }
+      if (!fbUser.displayName) {
+        await updateProfile(fbUser, { displayName: randomDisplayName() })
       }
 
-      return this.insertKarrotminiUser(karrotUser)
+      me = toUser(fbUser)
     }
 
-    let fbUser = auth.currentUser as FirebaseUser | null
-    if (!fbUser) {
-      const userCredential = await signInAnonymously(auth)
-      fbUser = userCredential.user as FirebaseUser
-    }
-    if (!fbUser.displayName) {
-      await updateProfile(fbUser, { displayName: randomDisplayName() })
-    }
-    return toUser(fbUser)
+    return me
   },
 
   async findOneUserByKarrotUserId(karrotUserId: string) {
@@ -117,10 +120,12 @@ export const userDb = (): UserDb => ({
     }
     await updateDoc(doc(karrotminiUsersCol, karrotUser.id), partialUser)
 
-    return {
+    me = {
       ...user,
       ...partialUser,
     }
+
+    return me
   },
 
   async insertFirebaseUser(fbUser) {
