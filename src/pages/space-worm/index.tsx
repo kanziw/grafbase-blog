@@ -27,7 +27,7 @@ export const SpaceWorm = () => {
         },
       })
     }
-  }, [me, top10Scores, canvasRef.current])
+  }, [me, top10Scores, game, navigate])
 
   if (isLoading) {
     return <div>Loading..</div>

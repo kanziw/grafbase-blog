@@ -2,7 +2,7 @@ import './App.css'
 
 import { Link } from 'react-router-dom'
 
-import { Helmet, UserDisplayName } from './components'
+import { Helmet } from './components'
 import { gameDb } from './db'
 import { useMe } from './hooks'
 
@@ -16,7 +16,7 @@ const App = () => {
       <Helmet isRoot={true} />
       <h1 className="title">미니앱게임천국👼</h1>
       <div className="display-name">
-        {isLoadedDone ? <UserDisplayName me={me} /> : <div>Loading...</div>}
+        <div>{isLoadedDone ? `👋 Hello, ${me.displayName}` : 'Loading...'}</div>
       </div>
       <section className="games">
         <ul>
