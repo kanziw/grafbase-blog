@@ -14,7 +14,7 @@ const MARGIN_TOP = -100;
 export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Props) => {
   const spaceWorm_ctx = spaceWorm_canvas.getContext('2d')
 
-  const startY = -20
+  const startY = 0
   const baseFillText = (text: string, x: number, y: number) => {
     spaceWorm_ctx.fillText(text, x, y + startY)
   }
@@ -230,7 +230,7 @@ export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Pr
   }
 
   function spaceWorm_drawJoystick() {
-    const minusY = startY + 10
+    const minusY = startY - 5
 
     // draw the joysticks
     spaceWorm_ctx.globalAlpha = 0.5
@@ -1031,7 +1031,7 @@ export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Pr
 
     // different screens based on state
     if (spaceWorm_state === 'start') {
-      const fillText = makeFillText(0)
+      const fillText = makeFillText(-20)
       spaceWorm_ctx.font = '8px Arial'
       spaceWorm_ctx.fillStyle = 'white'
       spaceWorm_ctx.textAlign = 'center'
@@ -1048,7 +1048,7 @@ export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Pr
       spaceWorm_ctx.font = '3px Arial'
       fillText('Click/tap to continue.', 0, rankHeight + (top10Scores.length * rankCellHeight) + 4)
     } else if (spaceWorm_state === 'levelstart') {
-      const fillText = makeFillText(5);
+      const fillText = makeFillText(-15);
 
       spaceWorm_ctx.font = '4px Arial'
       spaceWorm_ctx.fillStyle = 'white'
@@ -1086,7 +1086,7 @@ export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Pr
       spaceWorm_ctx.font = '1px Arial'
       fillText('Click/tap to continue.', 0, 6)
     } else if (spaceWorm_state === 'gamecomplete') {
-      const fillText = makeFillText(5);
+      const fillText = makeFillText(-15);
 
       spaceWorm_ctx.font = '4px Arial'
       spaceWorm_ctx.fillStyle = 'white'
@@ -1168,7 +1168,7 @@ export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Pr
       spaceWorm_ctx.fillStyle = 'white'
       spaceWorm_ctx.textAlign = 'left'
       
-      const fillText = makeFillText(30);
+      const fillText = makeFillText(6);
       fillText('Stars: ' + spaceWorm_starsRemaining,
         ((-spaceWorm_deviceWidth / 2) + 16) / spaceWorm_scaleFitNative,
         ((-spaceWorm_deviceHeight / 2) + 64) / spaceWorm_scaleFitNative,
@@ -1182,7 +1182,7 @@ export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Pr
         }
       }
     } else if (spaceWorm_state === 'gameover') {
-      const fillText = makeFillText(0);
+      const fillText = makeFillText(-10);
 
       spaceWorm_ctx.font = '4px Arial'
       spaceWorm_ctx.fillStyle = 'white'
@@ -1191,7 +1191,7 @@ export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Pr
       spaceWorm_ctx.font = '2px Arial'
       fillText('Click/tap to restart the level.', 0, 4)
     } else if (spaceWorm_state === 'win') {
-      const fillText = makeFillText(0);
+      const fillText = makeFillText(-10);
 
       spaceWorm_ctx.font = '4px Arial'
       spaceWorm_ctx.fillStyle = 'white'
