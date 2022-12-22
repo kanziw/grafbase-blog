@@ -1,11 +1,11 @@
-import './index.css'
+import './sudoku.css'
 
 import { cloneDeep } from 'lodash'
 import { useEffect, useState } from 'react'
 
 import { useMe } from '../../hooks'
 import { Difficulty, randomBoard } from './boards'
-import { Game } from './game'
+import { Game } from './Game'
 import { Menu } from './Menu'
 import { boardToGame, checkConflicts, IGame, isComplete } from './sudoku'
 
