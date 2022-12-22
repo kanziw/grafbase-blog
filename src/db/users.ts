@@ -4,7 +4,7 @@ import {
   updateProfile,
   User as UserSchema,
 } from 'firebase/auth'
-import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore'
+import { doc, getDoc, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore'
 
 import { auth } from '../firebase'
 import { getCollection } from './core'
@@ -14,6 +14,8 @@ interface UserDb {
   findOneUserByKarrotUserId(karrotUserId: string): Promise<User | null>;
 
   insertKarrotminiUser(karrotUser: KarrotUser): Promise<User>;
+  updateKarrotminiUser(user: User, karrotUser: KarrotUser): Promise<User>;
+
   insertFirebaseUser(fbUser: FirebaseUser): Promise<User>;
 
   find(userId: string): Promise<User | null>;
@@ -50,17 +52,11 @@ const unknownUser = (id: string): User => ({
 })
 
 const usersCol = getCollection<User>('users')
-const karrotminiUsers = getCollection<User>('karrotmini-users')
+const karrotminiUsersCol = getCollection<User>('karrotminiUsers')
 const isKarrotmini = !karrotmini.getKarrotUser().id.startsWith('id:')
-
-let me: User | null = null
 
 export const userDb = (): UserDb => ({
   async getMe() {
-    if (me) {
-      return me
-    }
-
     if (isKarrotmini) {
       const { karrotUser } = await karrotmini.requestUserConsent({
         scopes: ['account/profile'],
@@ -70,7 +66,6 @@ export const userDb = (): UserDb => ({
         karrotUser.id,
       )
       if (karrotminiUser) {
-        me = karrotminiUser
         return karrotminiUser
       }
 
@@ -85,12 +80,11 @@ export const userDb = (): UserDb => ({
     if (!fbUser.displayName) {
       await updateProfile(fbUser, { displayName: randomDisplayName() })
     }
-    me = toUser(fbUser)
-    return me
+    return toUser(fbUser)
   },
 
   async findOneUserByKarrotUserId(karrotUserId: string) {
-    const snapshot = await getDoc(doc(karrotminiUsers, karrotUserId))
+    const snapshot = await getDoc(doc(karrotminiUsersCol, karrotUserId))
     return snapshot.exists() && snapshot.data() ? snapshot.data() : null
   },
 
@@ -109,9 +103,24 @@ export const userDb = (): UserDb => ({
       createdAt: now,
     }
 
-    await setDoc(doc(karrotminiUsers, user.uid), user)
+    await setDoc(doc(karrotminiUsersCol, user.uid), user)
 
     return user
+  },
+
+  async updateKarrotminiUser(user, karrotUser) {
+    const partialUser = {
+      displayName: karrotUser.nickname ?? user.displayName,
+      photoURL: karrotUser.profileImage?.url ?? user.photoURL,
+      karrotUser,
+      lastSignedInAt: new Date(),
+    }
+    await updateDoc(doc(karrotminiUsersCol, karrotUser.id), partialUser)
+
+    return {
+      ...user,
+      ...partialUser,
+    }
   },
 
   async insertFirebaseUser(fbUser) {
@@ -130,25 +139,6 @@ export const userDb = (): UserDb => ({
 
     return userIds.map((userId, idx) => users[idx] ?? unknownUser(userId))
   },
-})
-
-karrotmini.subscribe(async() => {
-  if (!me || !isKarrotmini) {
-    return
-  }
-
-  const karrotUser = karrotmini.getKarrotUser()
-
-  await updateDoc(doc(karrotminiUsers, karrotUser.id), {
-    displayName: karrotUser.nickname ?? randomDisplayName(),
-    photoURL: (karrotUser.profileImage?.url as string) ?? null,
-    karrotUser,
-  })
-
-  const user = await userDb().findOneUserByKarrotUserId(karrotUser.id)
-  if (user) {
-    me = user
-  }
 })
 
 function toUser(fbUser: FirebaseUser): User {
@@ -171,13 +161,6 @@ function optionalStrToDate(str: string | undefined): Date {
     return new Date()
   }
   return new Date(str)
-}
-
-function isRealKarrotUser(karrotUser: KarrotUser): boolean {
-  if (process.env.NODE_ENV !== 'production') {
-    return true
-  }
-  return !karrotUser.id.startsWith('id:')
 }
 
 function randomDisplayName() {

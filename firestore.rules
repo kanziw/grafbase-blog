@@ -10,9 +10,16 @@ service cloud.firestore {
       allow write: if signedIn() && request.auth.uid == request.resource.data.uid;
     }
 
+    match /karrotminiUsers/{user} {
+      allow read: if true;
+      // allow write: if signedIn() && request.auth.uid == request.resource.data.uid;
+      allow write: if true;
+    }
+
     match /gameScores/{gameScore} {
       allow read: if true;
-      allow write: if signedIn() && request.auth.uid == request.resource.data.userId;
+      // allow write: if signedIn() && request.auth.uid == request.resource.data.userId;
+      allow write: if true;
     }
 
     match /{document=**} {
