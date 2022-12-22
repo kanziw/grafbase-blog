@@ -1024,16 +1024,16 @@ export const gameOnCanvas = (spaceWorm_canvas, { top10Scores, ...callbacks }: Pr
       spaceWorm_ctx.textAlign = 'center'
       spaceWorm_ctx.fillText('SPACE WORM!', 0, 0)
 
-      const rankFontSize = 1.5
-      spaceWorm_ctx.font = `${rankFontSize}px Arial`
+      const rankCellHeight = 1.8
+      spaceWorm_ctx.font = `${rankCellHeight * 0.8}px Arial`
       spaceWorm_ctx.fillText('---------------------- TOP 10 ----------------------', 0, 3)
-      const rankHeight = 3 + rankFontSize 
+      const rankHeight = 3 + rankCellHeight 
       top10Scores.forEach((score, idx) => {
-        spaceWorm_ctx.fillText(`[${score.rank}]\tscore: ${score.score},\tname: ${score.user.displayName}`, 0, rankHeight + (idx * rankFontSize))
+        spaceWorm_ctx.fillText(`[${score.rank}]\tscore: ${score.score},\tname: ${score.user.displayName}`, 0, rankHeight + (idx * rankCellHeight))
       })
-      spaceWorm_ctx.fillText('--------------------------------------------------------', 0, rankHeight + (top10Scores.length * rankFontSize))
+      spaceWorm_ctx.fillText('--------------------------------------------------------', 0, rankHeight + (top10Scores.length * rankCellHeight))
       spaceWorm_ctx.font = '2px Arial'
-      spaceWorm_ctx.fillText('Click/tap to continue.', 0, rankHeight + (top10Scores.length * rankFontSize) + 2)
+      spaceWorm_ctx.fillText('Click/tap to continue.', 0, rankHeight + (top10Scores.length * rankCellHeight) + 2)
     } else if (spaceWorm_state === 'levelstart') {
       spaceWorm_ctx.font = '4px Arial'
       spaceWorm_ctx.fillStyle = 'white'
