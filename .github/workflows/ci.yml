@@ -1,6 +1,5 @@
 on:
   - push
-  - pull_request
 
 name: CI
 
@@ -58,21 +57,3 @@ jobs:
       - name: Build React
         run: |
           yarn build
-
-  preview-deployment:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version-file: '.tool-versions'
-      - run: |
-          yarn
-          yarn build
-
-      - id: karrotmini-deployment
-        uses: karrotmini/deployment-site@beta
-        with:
-          api-key: ${{ secrets.KARROTMINI_API_KEY }}
-          build-output-directory: ./dist
-          preview-id: gh-pr-${{ github.event.pull_request.number }}
