@@ -38,10 +38,6 @@ class Cell extends React.Component<CellProps> {
     classes.push('j' + cell.j)
     classes.push(cell.editable ? 'editable' : 'not-editable')
     classes.push(cell.hasConflict ? 'has-conflict' : 'no-conflict')
-    if (cell.hasConflict) {
-      console.log('', cell)
-      console.log('>>>>', classes.join(' '))
-    }
 
     return (
       <td className={classes.join(' ')}>

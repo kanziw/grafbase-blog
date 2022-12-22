@@ -43,13 +43,13 @@ const games: Game[] = [
     slug: 'space-worm',
     name: 'SpaceWorm',
     logoImageUrl: '/images/space-worm.jpg',
-    width: '30%',
+    width: '41%',
   },
   {
     slug: 'sudoku',
     name: 'Sudoku',
     logoImageUrl: '/images/sudoku.webp',
-    width: '35%',
+    width: '55%',
   },
 ]
 

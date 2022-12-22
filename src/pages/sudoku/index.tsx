@@ -1,7 +1,7 @@
 import './index.css'
 
 import { cloneDeep } from 'lodash'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useMe } from '../../hooks'
 import { Difficulty, randomBoard } from './boards'
