@@ -25,7 +25,7 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - run: |
-          yarn install --immutable --immutable-cache
+          yarn install
 
       - name: Lint
         run: |
@@ -52,7 +52,7 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - run: |
-          yarn install --immutable --immutable-cache
+          yarn install
 
       - name: Build React
         run: |
