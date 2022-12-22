@@ -4,24 +4,23 @@ import {
   updateProfile,
   User as UserSchema,
 } from 'firebase/auth'
-import { doc, getDoc, setDoc } from 'firebase/firestore'
+import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore'
 
 import { auth } from '../firebase'
 import { getCollection } from './core'
 
 interface UserDb {
-  getMe(): Promise<Me | null>;
+  getMe(): Promise<User>;
+  findOneUserByKarrotUserId(karrotUserId: string): Promise<User | null>;
 
-  syncToDb(user: Me): Promise<void>;
-  subscribeKarrotUser(): void;
+  insertKarrotminiUser(karrotUser: KarrotUser): Promise<User>;
+  insertFirebaseUser(fbUser: FirebaseUser): Promise<User>;
 
   find(userId: string): Promise<User | null>;
   list(userIds: string[]): Promise<User[]>;
-
-  updateDisplayName(me: Me, displayName: string): Promise<void>;
 }
 
-export type Me = UserSchema & {
+export type FirebaseUser = UserSchema & {
   displayName: string;
   karrotUser: KarrotUser | null;
 };
@@ -29,71 +28,96 @@ export type User = {
   id: string;
   uid: string;
   displayName: string;
+  photoURL: string | null;
   email: string | null;
   emailVerified: boolean;
   isAnonymous: boolean;
   karrotUser: KarrotUser | null;
-  lastLoginAt: Date;
+  lastSignedInAt: Date;
   createdAt: Date;
 };
 const unknownUser = (id: string): User => ({
   id,
   uid: id,
   displayName: 'Unknown',
+  photoURL: null,
   email: null,
   emailVerified: false,
   isAnonymous: true,
   karrotUser: null,
-  lastLoginAt: new Date(),
+  lastSignedInAt: new Date(),
   createdAt: new Date(),
 })
 
 const usersCol = getCollection<User>('users')
+const karrotminiUsers = getCollection<User>('karrotmini-users')
+const isKarrotmini = !karrotmini.getKarrotUser().id.startsWith('id:')
+
+let me: User | null = null
 
 export const userDb = (): UserDb => ({
   async getMe() {
-    let me = auth.currentUser as Me | null
-    if (!me) {
+    if (me) {
+      return me
+    }
+
+    if (isKarrotmini) {
+      const { karrotUser } = await karrotmini.requestUserConsent({
+        scopes: ['account/profile'],
+      })
+
+      const karrotminiUser = await this.findOneUserByKarrotUserId(
+        karrotUser.id,
+      )
+      if (karrotminiUser) {
+        me = karrotminiUser
+        return karrotminiUser
+      }
+
+      return this.insertKarrotminiUser(karrotUser)
+    }
+
+    let fbUser = auth.currentUser as FirebaseUser | null
+    if (!fbUser) {
       const userCredential = await signInAnonymously(auth)
-      me = userCredential.user as Me
-
-      if (!me.displayName) {
-        await this.updateDisplayName(
-          me,
-          `Stranger #${Math.round(Math.random() * 1000)}`,
-        )
-      }
+      fbUser = userCredential.user as FirebaseUser
     }
-    const karrotUser = karrotmini.getKarrotUser()
-    if (isRealKarrotUser(karrotUser)) {
-      await karrotmini.requestUserConsent({ scopes: ['account/profile'] })
-      if (karrotUser.nickname) {
-        me.displayName = karrotUser.nickname
-      }
+    if (!fbUser.displayName) {
+      await updateProfile(fbUser, { displayName: randomDisplayName() })
     }
-
-    await this.syncToDb(me)
-
+    me = toUser(fbUser)
     return me
   },
 
-  async syncToDb(user) {
-    await setDoc(doc(usersCol, user.uid), toUser(user), {
-      merge: true,
-    })
+  async findOneUserByKarrotUserId(karrotUserId: string) {
+    const snapshot = await getDoc(doc(karrotminiUsers, karrotUserId))
+    return snapshot.exists() && snapshot.data() ? snapshot.data() : null
   },
 
-  subscribeKarrotUser() {
-    karrotmini.subscribe(() => {
-      const me = auth.currentUser as Me | null
-      const karrotUser = karrotmini.getKarrotUser()
-      if (me && isRealKarrotUser(karrotUser)) {
-        if (isRealKarrotUser(karrotUser)) {
-          me.karrotUser = karrotUser
-          this.syncToDb(me)
-        }
-      }
-    })
+  async insertKarrotminiUser(karrotUser) {
+    const now = new Date()
+    const user: User = {
+      id: karrotUser.id,
+      uid: karrotUser.id,
+      displayName: karrotUser.nickname ?? randomDisplayName(),
+      photoURL: (karrotUser.profileImage?.url as string) ?? null,
+      email: null,
+      emailVerified: false,
+      isAnonymous: false,
+      karrotUser,
+      lastSignedInAt: now,
+      createdAt: now,
+    }
+
+    await setDoc(doc(karrotminiUsers, user.uid), user)
+
+    return user
+  },
+
+  async insertFirebaseUser(fbUser) {
+    const user = toUser(fbUser)
+    await setDoc(doc(usersCol, fbUser.uid), user)
+    return user
   },
 
   async find(userId) {
@@ -106,25 +130,39 @@ export const userDb = (): UserDb => ({
 
     return userIds.map((userId, idx) => users[idx] ?? unknownUser(userId))
   },
-
-  async updateDisplayName(me, displayName) {
-    await updateProfile(me, { displayName })
-    await this.syncToDb(me)
-  },
 })
-userDb().subscribeKarrotUser()
 
-function toUser(me: Me): User {
+karrotmini.subscribe(async() => {
+  if (!me || !isKarrotmini) {
+    return
+  }
+
+  const karrotUser = karrotmini.getKarrotUser()
+
+  await updateDoc(doc(karrotminiUsers, karrotUser.id), {
+    displayName: karrotUser.nickname ?? randomDisplayName(),
+    photoURL: (karrotUser.profileImage?.url as string) ?? null,
+    karrotUser,
+  })
+
+  const user = await userDb().findOneUserByKarrotUserId(karrotUser.id)
+  if (user) {
+    me = user
+  }
+})
+
+function toUser(fbUser: FirebaseUser): User {
   return {
-    id: me.uid,
-    uid: me.uid,
-    displayName: me.displayName ?? null,
-    email: me.email ?? null,
-    emailVerified: me.emailVerified,
-    isAnonymous: me.isAnonymous,
-    karrotUser: me.karrotUser ?? null,
-    lastLoginAt: optionalStrToDate(me.metadata.lastSignInTime),
-    createdAt: optionalStrToDate(me.metadata.creationTime),
+    id: fbUser.uid,
+    uid: fbUser.uid,
+    displayName: fbUser.displayName ?? null,
+    photoURL: fbUser.photoURL,
+    email: fbUser.email ?? null,
+    emailVerified: fbUser.emailVerified,
+    isAnonymous: fbUser.isAnonymous,
+    karrotUser: fbUser.karrotUser ?? null,
+    lastSignedInAt: optionalStrToDate(fbUser.metadata.lastSignInTime),
+    createdAt: optionalStrToDate(fbUser.metadata.creationTime),
   }
 }
 
@@ -140,4 +178,8 @@ function isRealKarrotUser(karrotUser: KarrotUser): boolean {
     return true
   }
   return !karrotUser.id.startsWith('id:')
+}
+
+function randomDisplayName() {
+  return `Stranger #${Math.round(Math.random() * 1000)}`
 }

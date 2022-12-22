@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Outlet } from 'react-router-dom'
 
-import { Me, userDb } from '../db'
+import { User, userDb } from '../db'
 
 export const LoginFirst = () => {
-  const [me, setMe] = useState<Me | null>(null)
+  const [me, setMe] = useState<User | null>(null)
   useEffect(() => {
     userDb().getMe().then(setMe)
   }, [])

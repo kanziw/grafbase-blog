@@ -1,31 +1,41 @@
-import { doc, getDoc, getDocs, limit, orderBy, query, setDoc, Timestamp, where } from 'firebase/firestore'
+import {
+  doc,
+  getDoc,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  setDoc,
+  Timestamp,
+  where,
+} from 'firebase/firestore'
 
 import { getCollection, WithId, withId } from './core'
-import type { Me } from './users'
+import type { User } from './users'
 
 interface GameDb {
-  list(): GameWithLinkUrl[],
-  findOne(slug: string): Game,
+  list(): GameWithLinkUrl[];
+  findOne(slug: string): Game;
 
-  upsertScoreIfHigher(game: Game, me: Me, score: number): Promise<void>,
-  listTop10Scores(game: Game): Promise<GameScore[]>,
+  upsertScoreIfHigher(game: Game, me: User, score: number): Promise<void>;
+  listTop10Scores(game: Game): Promise<GameScore[]>;
 }
 
 export type Game = {
-  slug: string,
-  name: string,
-  logoImageUrl: string
-}
-type GameWithLinkUrl = Game & { linkUrl: string }
+  slug: string;
+  name: string;
+  logoImageUrl: string;
+};
+type GameWithLinkUrl = Game & { linkUrl: string };
 type GameScoreWithoutId = {
-  gameSlug: string,
-  score: number,
-  userId: string,
-  scoredAt: Date,
-}
+  gameSlug: string;
+  score: number;
+  userId: string;
+  scoredAt: Date;
+};
 export type GameScore = WithId<GameScoreWithoutId> & {
-  rank: number,
-}
+  rank: number;
+};
 
 const games: Game[] = [
   {
@@ -39,11 +49,11 @@ const gameScoresCol = getCollection<GameScoreWithoutId>('gameScores')
 
 export const gameDb = (): GameDb => ({
   list() {
-    return games.map(game => ({ ...game, linkUrl: `/games/${game.slug}` }))
+    return games.map((game) => ({ ...game, linkUrl: `/games/${game.slug}` }))
   },
 
   findOne(slug) {
-    const game = games.find(game => game.slug === slug)
+    const game = games.find((game) => game.slug === slug)
     if (!game) {
       throw new Error(`Game not found: ${slug}`)
     }
@@ -62,22 +72,28 @@ export const gameDb = (): GameDb => ({
       return
     }
 
-    await setDoc<GameScoreWithoutId>(ref, {
-      gameSlug: game.slug,
-      score,
-      userId: me.uid,
-      scoredAt: Timestamp.now(),
-    }, { merge: true })
+    await setDoc<GameScoreWithoutId>(
+      ref,
+      {
+        gameSlug: game.slug,
+        score,
+        userId: me.uid,
+        scoredAt: Timestamp.now(),
+      },
+      { merge: true },
+    )
   },
 
   async listTop10Scores(game) {
-    const snapshots = await getDocs(query(
-      gameScoresCol,
-      where('gameSlug', '==', game.slug),
-      orderBy('score', 'desc'),
-      orderBy('scoredAt', 'asc'),
-      limit(10),
-    ))
+    const snapshots = await getDocs(
+      query(
+        gameScoresCol,
+        where('gameSlug', '==', game.slug),
+        orderBy('score', 'desc'),
+        orderBy('scoredAt', 'asc'),
+        limit(10),
+      ),
+    )
     return snapshots.docs.map(withId).map(toGameScore)
   },
 })

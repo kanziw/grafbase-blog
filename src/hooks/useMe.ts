@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react'
 
-import { Me, userDb } from '../db'
+import { User, userDb } from '../db'
 
 export const useMe = () => {
   const [isLoading, setIsLoading] = useState(false)
-  const [me, setMe] = useState<Me | null>(null)
+  const [me, setMe] = useState<User | null>(null)
 
   useEffect(() => {
     setIsLoading(true)
-    userDb().getMe()
+    userDb()
+      .getMe()
       .then(setMe)
       .finally(() => setIsLoading(false))
   }, [])
